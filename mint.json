@@ -65,9 +65,8 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/griplock",
-    "github": "https://github.com/griplock",
-    "discord": "https://discord.gg/griplock"
+    "x": "https://x.com/griplockapp",
+    "github": "https://github.com/griplock"
   },
   "modeToggle": {
     "default": "dark"
