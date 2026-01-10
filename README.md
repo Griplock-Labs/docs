@@ -1,43 +1,97 @@
-# Mintlify Starter Kit
+# GRIPLOCK Documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+This folder contains the Mintlify documentation for GRIPLOCK - a hardware-secured ephemeral wallet system for Solana.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
-
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
-
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## Structure
 
 ```
-npm i -g mint
+griplock-docs/
+├── mint.json              # Mintlify configuration
+├── introduction.mdx       # Project overview
+├── quickstart.mdx         # Getting started guide
+├── architecture/
+│   ├── overview.mdx       # System architecture
+│   ├── data-flow.mdx      # Credential flow walkthrough
+│   └── components.mdx     # Component specifications
+├── security/
+│   ├── key-derivation.mdx # HKDF key derivation
+│   ├── encryption.mdx     # E2E encryption details
+│   └── session-management.mdx # Session lifecycle
+├── api-reference/
+│   ├── overview.mdx       # API introduction
+│   ├── websocket.mdx      # WebSocket signaling API
+│   └── payloads.mdx       # Data structure specs
+└── images/                # Documentation assets
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## Local Development
 
+### Prerequisites
+
+- Node.js v20.17.0 or higher
+- npm or yarn
+
+### Install Mintlify CLI
+
+```bash
+npm i -g mintlify
 ```
-mint dev
+
+### Run Development Server
+
+```bash
+cd griplock-docs
+mintlify dev
 ```
 
-View your local preview at `http://localhost:3000`.
+This starts a local server at `http://localhost:3000` with hot reload.
 
-## Publishing changes
+## Deployment
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+### Option 1: Mintlify Hosting
 
-## Need help?
+1. Sign up at [mintlify.com/start](https://mintlify.com/start)
+2. Connect your GitHub repository
+3. Point Mintlify to the `griplock-docs` folder
+4. Deploy automatically on push
 
-### Troubleshooting
+### Option 2: Self-Hosted
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+Build the static site:
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+```bash
+mintlify build
+```
+
+Deploy the output to any static hosting (Vercel, Netlify, etc.)
+
+## Configuration
+
+Edit `mint.json` to customize:
+
+- **name**: Site title
+- **colors**: Brand colors (cyberpunk green theme)
+- **navigation**: Page structure
+- **topbarLinks**: External links
+- **footerSocials**: Social media links
+
+## Adding New Pages
+
+1. Create a new `.mdx` file in the appropriate folder
+2. Add frontmatter with title and description
+3. Add the page path to `mint.json` navigation
+4. Write content using MDX + Mintlify components
+
+### Available Components
+
+- `<Card>`, `<CardGroup>` - Feature cards
+- `<Tabs>`, `<Tab>` - Tabbed content
+- `<Accordion>`, `<AccordionGroup>` - Expandable sections
+- `<Steps>`, `<Step>` - Numbered steps
+- `<Warning>`, `<Info>` - Callout boxes
+- `<Frame>` - Image containers
+- Mermaid diagrams
+
+## License
+
+This documentation is part of the GRIPLOCK project.

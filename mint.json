@@ -1,0 +1,102 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "GRIPLOCK",
+  "logo": {
+    "dark": "/images/logo-dark.svg",
+    "light": "/images/logo-light.svg"
+  },
+  "favicon": "/images/favicon.svg",
+  "colors": {
+    "primary": "#00FF88",
+    "light": "#00FF88",
+    "dark": "#0D0D0D",
+    "anchors": {
+      "from": "#00FF88",
+      "to": "#00FFFF"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/griplock"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Launch App",
+    "url": "https://griplock.app"
+  },
+  "tabs": [
+    {
+      "name": "Documentation",
+      "url": "/"
+    },
+    {
+      "name": "API Reference",
+      "url": "/api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/griplock"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://blog.griplock.app"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "quickstart"
+      ]
+    },
+    {
+      "group": "Architecture",
+      "pages": [
+        "architecture/overview",
+        "architecture/data-flow",
+        "architecture/components"
+      ]
+    },
+    {
+      "group": "Security",
+      "pages": [
+        "security/key-derivation",
+        "security/encryption",
+        "security/session-management"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/overview",
+        "api-reference/websocket",
+        "api-reference/payloads"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/griplock",
+    "github": "https://github.com/griplock",
+    "discord": "https://discord.gg/griplock"
+  },
+  "backgroundImage": "/images/background.png",
+  "modeToggle": {
+    "default": "dark"
+  },
+  "font": {
+    "headings": {
+      "family": "JetBrains Mono",
+      "weight": 700
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400
+    }
+  }
+}
