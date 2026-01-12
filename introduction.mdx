@@ -1,92 +1,138 @@
 ---
 title: "Introduction"
-description: "GRIPLOCK - Hardware-secured ephemeral wallets for the Solana ecosystem"
+description: "The stealth key to your DeFi access."
 ---
 
 # What is GRIPLOCK?
 
-GRIPLOCK is a next-generation cryptocurrency wallet system that combines **NFC hardware security** with **ephemeral key generation** to deliver uncompromising protection for your digital assets.
+**The stealth key to your DeFi access.**
 
-<CardGroup cols={2}>
-  <Card title="Zero Private Key Storage" icon="shield-halved">
-    Private keys are never stored—they're deterministically derived on-demand from your NFC card and PIN combination.
+GRIPLOCK is your secure gateway to the decentralized finance ecosystem. One NFC card that unlocks everything. Protected by physical verification that only you control.
+
+<CardGroup cols={3}>
+  <Card title="Virtual Visa Cards" icon="credit-card">
+    Generate instant virtual cards funded by SOL. Spend anywhere via Apple Pay and Google Pay.
   </Card>
-  <Card title="Hardware-Grade Security" icon="microchip">
-    Leverages physical NFC cards as unforgeable hardware tokens that must be physically present to access funds.
+  <Card title="Instant Swaps" icon="arrows-rotate">
+    Swap tokens instantly through integrated DEX aggregators. Best rates, zero friction.
   </Card>
-  <Card title="Session-Based Access" icon="clock">
-    Time-limited sessions with activity-based expiration ensure your wallet auto-locks after inactivity.
+  <Card title="Global Transfers" icon="globe">
+    Send crypto with fast, low-fee transfers on Solana. Borderless payments in seconds.
   </Card>
-  <Card title="End-to-End Encryption" icon="lock">
-    All credential transmission uses X25519 key exchange with AES-256-GCM encryption.
+  <Card title="SOL Staking" icon="seedling">
+    Stake SOL and earn auto-compound yields. Your assets work while you sleep.
+  </Card>
+  <Card title="Buy Crypto" icon="circle-dollar-to-slot">
+    On-ramp fiat to crypto instantly via Moonpay. Credit cards, Apple Pay, bank transfers.
+  </Card>
+  <Card title="Cash Out" icon="money-bill-transfer">
+    Off-ramp crypto to fiat directly to your bank. No exchange needed.
   </Card>
 </CardGroup>
 
-## How It Works
+## Security Reimagined
 
-GRIPLOCK implements a unique **two-factor derivation model** where your Solana wallet address is deterministically computed from:
+Crypto wallets have always relied on software. But software can be hacked, seed phrases exposed, and access stolen without a trace.
 
-1. **NFC Card UID** — A unique, immutable hardware identifier embedded in your NFC card
-2. **User PIN** — A secret numeric code known only to you
-
-Neither factor alone can derive the wallet. Both must be present simultaneously, creating true two-factor authentication at the cryptographic level.
-
-```mermaid
-flowchart LR
-    A[NFC Card] -->|UID| C[HKDF Derivation]
-    B[User PIN] -->|Secret| C
-    C --> D[Ed25519 Seed]
-    D --> E[Solana Address]
-```
-
-## The GRIPLOCK Difference
-
-Traditional hardware wallets store private keys on the device, creating a single point of failure. GRIPLOCK takes a fundamentally different approach:
-
-| Traditional Wallets | GRIPLOCK |
-|---------------------|----------|
-| Private key stored on device | No private key storage anywhere |
-| Device theft = funds at risk | Card theft alone is useless |
-| Recovery phrases can be stolen | Nothing to steal—derivation is ephemeral |
-| Complex backup procedures | Just remember your PIN |
-
-## Key Features
+**GRIPLOCK changes everything by adding a physical security layer.**
 
 <AccordionGroup>
-  <Accordion title="Deterministic Key Derivation">
-    Using HKDF-SHA256 with domain separation, GRIPLOCK derives the same Ed25519 keypair every time from identical inputs. No seed storage required.
+  <Accordion title="No Seed Phrases">
+    Nothing to write down. Nothing to lose. Nothing to steal.
   </Accordion>
-  <Accordion title="WebRTC Secure Channel">
-    Mobile-to-dashboard communication uses WebRTC data channels with X25519 ECDH key exchange, ensuring credentials never transit through servers in plaintext.
+  <Accordion title="Ephemeral Wallets">
+    Fresh keys generated on demand. Vanish when you're done. No persistent attack surface.
   </Accordion>
-  <Accordion title="Activity-Based Session Timeout">
-    Sessions automatically expire after 15 minutes of inactivity. Any user interaction (mouse movement, clicks, keyboard input) resets the timer.
+  <Accordion title="Zero Knowledge Authentication">
+    Prove ownership without exposing credentials. Privacy-preserving verification.
   </Accordion>
-  <Accordion title="Real-Time Blockchain Data">
-    Direct integration with Solana mainnet RPC for live balance, SPL token holdings, and transaction history.
+  <Accordion title="Auto-Lock Sessions">
+    15-minute activity timeout. Masked balances. Your financial data stays yours.
   </Accordion>
 </AccordionGroup>
 
-## Target Use Cases
+## Two Factors. Total Control.
 
-- **High-Security Wallets** — For users who need maximum protection without complex hardware wallet setups
-- **Cold Storage Access** — Ephemeral access to cold storage funds when needed
-- **Institutional Access Control** — Multi-party access requiring physical NFC card presence
-- **Point-of-Sale Systems** — NFC tap-to-pay scenarios where wallet access is momentary
+Your NFC card becomes the ultimate lock. Combined with your PIN, they unlock everything.
 
-## Next Steps
+```mermaid
+flowchart LR
+    A[NFC Card] -->|UID| C[Key Derivation]
+    B[Your PIN] -->|Secret| C
+    C --> D[Access Unlocked]
+    D --> E[Buy / Spend / Swap / Stake / Transfer / Cash Out]
+```
+
+| Without Card | Without PIN | With Both |
+|--------------|-------------|-----------|
+| No access | No access | Full access |
+| Nothing moves | Nothing moves | Everything unlocked |
+
+## Features
+
+GRIPLOCK isn't just security. It's full-cycle DeFi access.
+
+<CardGroup cols={3}>
+  <Card title="Buy Crypto" icon="circle-dollar-to-slot">
+    On-ramp from fiat via Moonpay. Cards, Apple Pay, bank transfers. 160+ countries.
+  </Card>
+  <Card title="Spend Anywhere" icon="cart-shopping">
+    Virtual Visa cards work everywhere Visa is accepted. Online shopping, subscriptions, global payments.
+  </Card>
+  <Card title="Swap Tokens" icon="right-left">
+    Integrated DEX aggregators find the best rates. Swap any Solana token instantly.
+  </Card>
+  <Card title="Earn Yields" icon="chart-line">
+    Stake SOL with auto-compound. Maximize returns without manual intervention.
+  </Card>
+  <Card title="Micropayments" icon="bolt">
+    x402 protocol enables pay-per-use APIs and AI agent payments. Internet-native transactions.
+  </Card>
+  <Card title="Cash Out" icon="money-bill-transfer">
+    Off-ramp crypto to fiat via Moonpay. Direct to bank. No exchange needed.
+  </Card>
+</CardGroup>
+
+## Built for Privacy
+
+<Steps>
+  <Step title="Zero Cloud Connection">
+    No tracking. No analytics. No data collection. Your activity stays on your device.
+  </Step>
+  <Step title="Privacy-Preserving KYC">
+    Zero knowledge proofs let you prove eligibility without revealing personal data.
+  </Step>
+  <Step title="Stealth Operation">
+    Dashboard and mobile app designed for discretion. Masked balances. Hidden activity.
+  </Step>
+</Steps>
+
+## Tech Stack
+
+Built on cutting-edge decentralized infrastructure:
+
+| Layer | Technology |
+|-------|------------|
+| **Blockchain** | Solana — fast, low-fee transactions |
+| **On/Off-Ramp** | Moonpay — fiat to crypto and back |
+| **Payments** | x402 Protocol — HTTP-native micropayments |
+| **Privacy** | Zero Knowledge proofs — prove without revealing |
+| **Storage** | Filecoin — decentralized, censorship-resistant |
+| **Security** | NFC + PIN derivation — hardware-grade protection |
+
+## Get Started
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Get up and running with GRIPLOCK in minutes
+    Get up and running in minutes
   </Card>
   <Card title="Architecture" icon="sitemap" href="/architecture/overview">
-    Deep dive into system design and components
+    Deep dive into system design
   </Card>
   <Card title="Security" icon="shield" href="/security/key-derivation">
     Understand the cryptographic foundations
   </Card>
   <Card title="API Reference" icon="code" href="/api-reference/overview">
-    Integrate GRIPLOCK into your applications
+    Integrate GRIPLOCK into your apps
   </Card>
 </CardGroup>

@@ -9,11 +9,7 @@
   "colors": {
     "primary": "#A8B4C0",
     "light": "#C5CED6",
-    "dark": "#0D0D0D",
-    "anchors": {
-      "from": "#A8B4C0",
-      "to": "#8899AA"
-    }
+    "dark": "#0D0D0D"
   },
   "topbarLinks": [
     {
@@ -33,18 +29,6 @@
     {
       "name": "API Reference",
       "url": "/api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.gg/griplock"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://blog.griplock.app"
     }
   ],
   "navigation": [
@@ -81,11 +65,9 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/griplock",
-    "github": "https://github.com/griplock",
-    "discord": "https://discord.gg/griplock"
+    "x": "https://x.com/griplockapp",
+    "github": "https://github.com/griplock"
   },
-  "backgroundImage": "/images/background.png",
   "modeToggle": {
     "default": "dark"
   },
