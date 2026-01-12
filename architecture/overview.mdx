@@ -1,11 +1,11 @@
 ---
 title: "System Overview"
-description: "High-level architecture of the GRIPLOCK wallet system"
+description: "High-level architecture of the GRIPLOCK DeFi gateway"
 ---
 
 # System Overview
 
-GRIPLOCK is architected as a distributed system with three primary components that work together to provide secure, ephemeral wallet access.
+GRIPLOCK is architected as a distributed system that provides secure, ephemeral access to the decentralized finance ecosystem. The platform combines NFC-based authentication with integrated payment rails for a complete DeFi gateway.
 
 ## Architecture Diagram
 
@@ -70,6 +70,10 @@ flowchart TB
 | **Real-time** | WebSocket + WebRTC | Bidirectional communication |
 | **Cryptography** | Noble Curves + Noble Hashes | Ed25519, X25519, HKDF, AES-GCM |
 | **Blockchain** | Solana JSON-RPC | Mainnet interaction |
+| **On/Off-Ramp** | Moonpay SDK | Fiat-to-crypto and crypto-to-fiat |
+| **Micropayments** | x402 Protocol | HTTP-native pay-per-use transactions |
+| **Privacy** | Zero Knowledge Proofs | Privacy-preserving verification |
+| **Storage** | Filecoin | Decentralized data persistence |
 
 ## Design Principles
 

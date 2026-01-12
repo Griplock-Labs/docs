@@ -238,6 +238,96 @@ GRIPLOCK uses the Noble cryptography suite for all security-critical operations:
 - **Constant-time** — Resistant to timing attacks
 - **Modern** — Uses latest cryptographic best practices
 
+## Payment Integrations
+
+### Moonpay (On/Off-Ramp)
+
+Handles fiat-to-crypto and crypto-to-fiat conversions:
+
+```typescript
+// Moonpay integration endpoints
+interface MoonpayConfig {
+  apiKey: string;
+  environment: 'sandbox' | 'production';
+  defaultCurrency: 'SOL' | 'USDC';
+}
+
+// On-ramp: Buy crypto with fiat
+export function initiateBuy(params: {
+  amount: number;
+  currency: string;
+  walletAddress: string;
+}): Promise<MoonpayTransaction>;
+
+// Off-ramp: Sell crypto for fiat
+export function initiateSell(params: {
+  amount: number;
+  cryptoCurrency: string;
+  bankAccount: string;
+}): Promise<MoonpayTransaction>;
+```
+
+**Features:**
+- 160+ countries supported
+- Apple Pay, Google Pay, credit/debit cards
+- Built-in KYC verification
+- Direct bank transfers
+
+### x402 Protocol (Micropayments)
+
+HTTP-native payment protocol for pay-per-use transactions:
+
+```typescript
+// x402 payment handler
+interface X402Config {
+  facilitator: 'coinbase' | 'custom';
+  network: 'solana' | 'base';
+  currency: 'USDC';
+}
+
+// Handle 402 Payment Required responses
+export async function handlePaymentRequired(
+  response: Response,
+  wallet: Wallet
+): Promise<PaymentResult>;
+
+// Create payment middleware
+export function createPaymentMiddleware(
+  endpoints: Record<string, { price: string }>
+): Middleware;
+```
+
+**Use Cases:**
+- API access payments
+- AI agent transactions
+- Content micropayments
+- Pay-per-use services
+
+### Virtual Cards
+
+Generate and manage virtual Visa cards:
+
+```typescript
+interface VirtualCard {
+  id: string;
+  last4: string;
+  expiryMonth: number;
+  expiryYear: number;
+  balance: number;
+  status: 'active' | 'frozen' | 'cancelled';
+}
+
+// Card operations
+export function createCard(walletAddress: string): Promise<VirtualCard>;
+export function topUpCard(cardId: string, amount: number): Promise<Transaction>;
+export function freezeCard(cardId: string): Promise<void>;
+```
+
+**Supported:**
+- Apple Pay integration
+- Google Pay integration
+- Online transactions worldwide
+
 ## Blockchain Integration
 
 ### Solana RPC Methods

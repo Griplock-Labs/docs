@@ -40,6 +40,15 @@
       ]
     },
     {
+      "group": "Features",
+      "pages": [
+        "features/cards",
+        "features/ramp",
+        "features/x402",
+        "features/privacy"
+      ]
+    },
+    {
       "group": "Architecture",
       "pages": [
         "architecture/overview",
