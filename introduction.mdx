@@ -1,92 +1,96 @@
 ---
 title: "Introduction"
-description: "GRIPLOCK - Hardware-secured ephemeral wallets for the Solana ecosystem"
+description: "Your Card. Your Vault. No Tap — No Access."
 ---
 
 # What is GRIPLOCK?
 
-GRIPLOCK is a next-generation cryptocurrency wallet system that combines **NFC hardware security** with **ephemeral key generation** to deliver uncompromising protection for your digital assets.
+**The stealth digital asset manager that uses your existing NFC cards as a physical verification layer.**
+
+Crypto security relies on software. Software can be exploited, seed phrases exposed, and access silently taken. GRIPLOCK adds a physical verification layer that turns the card you already carry into a lock for your digital assets.
+
+**Without a tap, nothing moves.**
 
 <CardGroup cols={2}>
-  <Card title="Zero Private Key Storage" icon="shield-halved">
-    Private keys are never stored—they're deterministically derived on-demand from your NFC card and PIN combination.
+  <Card title="No Private Key Storage" icon="shield-halved">
+    Private keys are never stored anywhere. They're derived on-demand from your NFC card + PIN combination.
   </Card>
-  <Card title="Hardware-Grade Security" icon="microchip">
-    Leverages physical NFC cards as unforgeable hardware tokens that must be physically present to access funds.
+  <Card title="Physical Verification" icon="id-card">
+    Your NFC card becomes an unforgeable hardware token. No card present = no access.
   </Card>
-  <Card title="Session-Based Access" icon="clock">
-    Time-limited sessions with activity-based expiration ensure your wallet auto-locks after inactivity.
+  <Card title="Auto-Lock Sessions" icon="clock">
+    15-minute activity-based timeout. Your wallet locks itself after inactivity.
   </Card>
-  <Card title="End-to-End Encryption" icon="lock">
-    All credential transmission uses X25519 key exchange with AES-256-GCM encryption.
+  <Card title="End-to-End Encrypted" icon="lock">
+    X25519 key exchange + AES-256-GCM encryption. Credentials never touch servers.
   </Card>
 </CardGroup>
 
-## How It Works
+## Your Card. Your Vault.
 
-GRIPLOCK implements a unique **two-factor derivation model** where your Solana wallet address is deterministically computed from:
+GRIPLOCK implements a **two-factor derivation model** where your Solana wallet is computed from:
 
-1. **NFC Card UID** — A unique, immutable hardware identifier embedded in your NFC card
-2. **User PIN** — A secret numeric code known only to you
+1. **NFC Card UID** — The unique hardware identifier in your card
+2. **Your PIN** — A secret code only you know
 
-Neither factor alone can derive the wallet. Both must be present simultaneously, creating true two-factor authentication at the cryptographic level.
+Neither factor alone can access the wallet. Both must be present simultaneously.
 
 ```mermaid
 flowchart LR
-    A[NFC Card] -->|UID| C[HKDF Derivation]
-    B[User PIN] -->|Secret| C
-    C --> D[Ed25519 Seed]
-    D --> E[Solana Address]
+    A[NFC Card] -->|UID| C[Key Derivation]
+    B[Your PIN] -->|Secret| C
+    C --> D[Wallet Generated]
+    D --> E[Access Granted]
 ```
 
 ## The GRIPLOCK Difference
 
-Traditional hardware wallets store private keys on the device, creating a single point of failure. GRIPLOCK takes a fundamentally different approach:
+Traditional wallets store private keys, creating a single point of failure. GRIPLOCK takes a fundamentally different approach:
 
 | Traditional Wallets | GRIPLOCK |
 |---------------------|----------|
-| Private key stored on device | No private key storage anywhere |
+| Private key stored on device | No key storage anywhere |
 | Device theft = funds at risk | Card theft alone is useless |
-| Recovery phrases can be stolen | Nothing to steal—derivation is ephemeral |
+| Seed phrases can be stolen | Nothing to steal |
 | Complex backup procedures | Just remember your PIN |
 
-## Key Features
+## How It Works
 
 <AccordionGroup>
-  <Accordion title="Deterministic Key Derivation">
-    Using HKDF-SHA256 with domain separation, GRIPLOCK derives the same Ed25519 keypair every time from identical inputs. No seed storage required.
+  <Accordion title="Tap Your Card">
+    Open the GRIPLOCK mobile app and tap any NFC card. The app reads the card's unique hardware identifier.
   </Accordion>
-  <Accordion title="WebRTC Secure Channel">
-    Mobile-to-dashboard communication uses WebRTC data channels with X25519 ECDH key exchange, ensuring credentials never transit through servers in plaintext.
+  <Accordion title="Enter Your PIN">
+    Input your secret PIN. The combination of card UID + PIN derives your wallet cryptographically.
   </Accordion>
-  <Accordion title="Activity-Based Session Timeout">
-    Sessions automatically expire after 15 minutes of inactivity. Any user interaction (mouse movement, clicks, keyboard input) resets the timer.
+  <Accordion title="Access Your Wallet">
+    Your Solana wallet appears on the dashboard with real balances, tokens, and transaction history.
   </Accordion>
-  <Accordion title="Real-Time Blockchain Data">
-    Direct integration with Solana mainnet RPC for live balance, SPL token holdings, and transaction history.
+  <Accordion title="Session Auto-Locks">
+    After 15 minutes of inactivity, your session expires. Tap again to re-access.
   </Accordion>
 </AccordionGroup>
 
-## Target Use Cases
+## Use Cases
 
-- **High-Security Wallets** — For users who need maximum protection without complex hardware wallet setups
-- **Cold Storage Access** — Ephemeral access to cold storage funds when needed
-- **Institutional Access Control** — Multi-party access requiring physical NFC card presence
-- **Point-of-Sale Systems** — NFC tap-to-pay scenarios where wallet access is momentary
+- **High-Security Storage** — Maximum protection without complex hardware wallets
+- **Cold Storage Access** — Ephemeral access to cold funds when needed
+- **Team Access Control** — Physical card presence required for transactions
+- **Point-of-Sale** — Tap-to-access for momentary wallet authorization
 
-## Next Steps
+## Get Started
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Get up and running with GRIPLOCK in minutes
+    Get up and running in minutes
   </Card>
   <Card title="Architecture" icon="sitemap" href="/architecture/overview">
-    Deep dive into system design and components
+    Deep dive into system design
   </Card>
   <Card title="Security" icon="shield" href="/security/key-derivation">
     Understand the cryptographic foundations
   </Card>
   <Card title="API Reference" icon="code" href="/api-reference/overview">
-    Integrate GRIPLOCK into your applications
+    Integrate GRIPLOCK into your apps
   </Card>
 </CardGroup>
