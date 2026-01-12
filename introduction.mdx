@@ -9,7 +9,7 @@ description: "The stealth key to your DeFi access."
 
 GRIPLOCK is your secure gateway to the decentralized finance ecosystem. One NFC card that unlocks everything. Protected by physical verification that only you control.
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Virtual Visa Cards" icon="credit-card">
     Generate instant virtual cards funded by SOL. Spend anywhere via Apple Pay and Google Pay.
   </Card>
@@ -21,6 +21,12 @@ GRIPLOCK is your secure gateway to the decentralized finance ecosystem. One NFC 
   </Card>
   <Card title="SOL Staking" icon="seedling">
     Stake SOL and earn auto-compound yields. Your assets work while you sleep.
+  </Card>
+  <Card title="Buy Crypto" icon="circle-dollar-to-slot">
+    On-ramp fiat to crypto instantly via Moonpay. Credit cards, Apple Pay, bank transfers.
+  </Card>
+  <Card title="Cash Out" icon="money-bill-transfer">
+    Off-ramp crypto to fiat directly to your bank. No exchange needed.
   </Card>
 </CardGroup>
 
@@ -54,7 +60,7 @@ flowchart LR
     A[NFC Card] -->|UID| C[Key Derivation]
     B[Your PIN] -->|Secret| C
     C --> D[Access Unlocked]
-    D --> E[Spend / Swap / Stake / Transfer]
+    D --> E[Buy / Spend / Swap / Stake / Transfer / Cash Out]
 ```
 
 | Without Card | Without PIN | With Both |
@@ -64,20 +70,26 @@ flowchart LR
 
 ## Features
 
-GRIPLOCK isn't just security. It's access.
+GRIPLOCK isn't just security. It's full-cycle DeFi access.
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
+  <Card title="Buy Crypto" icon="circle-dollar-to-slot">
+    On-ramp from fiat via Moonpay. Cards, Apple Pay, bank transfers. 160+ countries.
+  </Card>
   <Card title="Spend Anywhere" icon="cart-shopping">
     Virtual Visa cards work everywhere Visa is accepted. Online shopping, subscriptions, global payments.
-  </Card>
-  <Card title="Top Up Instantly" icon="wallet">
-    Fund your virtual card directly from your wallet. Instant balance updates. No waiting.
   </Card>
   <Card title="Swap Tokens" icon="right-left">
     Integrated DEX aggregators find the best rates. Swap any Solana token instantly.
   </Card>
   <Card title="Earn Yields" icon="chart-line">
     Stake SOL with auto-compound. Maximize returns without manual intervention.
+  </Card>
+  <Card title="Micropayments" icon="bolt">
+    x402 protocol enables pay-per-use APIs and AI agent payments. Internet-native transactions.
+  </Card>
+  <Card title="Cash Out" icon="money-bill-transfer">
+    Off-ramp crypto to fiat via Moonpay. Direct to bank. No exchange needed.
   </Card>
 </CardGroup>
 
@@ -102,6 +114,8 @@ Built on cutting-edge decentralized infrastructure:
 | Layer | Technology |
 |-------|------------|
 | **Blockchain** | Solana — fast, low-fee transactions |
+| **On/Off-Ramp** | Moonpay — fiat to crypto and back |
+| **Payments** | x402 Protocol — HTTP-native micropayments |
 | **Privacy** | Zero Knowledge proofs — prove without revealing |
 | **Storage** | Filecoin — decentralized, censorship-resistant |
 | **Security** | NFC + PIN derivation — hardware-grade protection |
