@@ -40,15 +40,6 @@
       ]
     },
     {
-      "group": "Features",
-      "pages": [
-        "features/cards",
-        "features/ramp",
-        "features/x402",
-        "features/privacy"
-      ]
-    },
-    {
       "group": "Architecture",
       "pages": [
         "architecture/overview",
@@ -62,6 +53,15 @@
         "security/key-derivation",
         "security/encryption",
         "security/session-management"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "features/cards",
+        "features/ramp",
+        "features/x402",
+        "features/privacy"
       ]
     },
     {
