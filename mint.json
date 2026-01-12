@@ -34,11 +34,7 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "roadmap"
-      ]
+      "pages": ["introduction", "quickstart", "roadmap"]
     },
     {
       "group": "Architecture",
