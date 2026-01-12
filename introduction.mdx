@@ -1,82 +1,110 @@
 ---
 title: "Introduction"
-description: "Your Card. Your Vault. No Tap — No Access."
+description: "The stealth key to your DeFi access."
 ---
 
 # What is GRIPLOCK?
 
-**The stealth digital asset manager that uses your existing NFC cards as a physical verification layer.**
+**The stealth key to your DeFi access.**
 
-Crypto security relies on software. Software can be exploited, seed phrases exposed, and access silently taken. GRIPLOCK adds a physical verification layer that turns the card you already carry into a lock for your digital assets.
-
-**Without a tap, nothing moves.**
+GRIPLOCK is your secure gateway to the decentralized finance ecosystem. One NFC card that unlocks everything. Protected by physical verification that only you control.
 
 <CardGroup cols={2}>
-  <Card title="No Private Key Storage" icon="shield-halved">
-    Private keys are never stored anywhere. They're derived on-demand from your NFC card + PIN combination.
+  <Card title="Virtual Visa Cards" icon="credit-card">
+    Generate instant virtual cards funded by SOL. Spend anywhere via Apple Pay and Google Pay.
   </Card>
-  <Card title="Physical Verification" icon="id-card">
-    Your NFC card becomes an unforgeable hardware token. No card present = no access.
+  <Card title="Instant Swaps" icon="arrows-rotate">
+    Swap tokens instantly through integrated DEX aggregators. Best rates, zero friction.
   </Card>
-  <Card title="Auto-Lock Sessions" icon="clock">
-    15-minute activity-based timeout. Your wallet locks itself after inactivity.
+  <Card title="Global Transfers" icon="globe">
+    Send crypto with fast, low-fee transfers on Solana. Borderless payments in seconds.
   </Card>
-  <Card title="End-to-End Encrypted" icon="lock">
-    X25519 key exchange + AES-256-GCM encryption. Credentials never touch servers.
+  <Card title="SOL Staking" icon="seedling">
+    Stake SOL and earn auto-compound yields. Your assets work while you sleep.
   </Card>
 </CardGroup>
 
-## Your Card. Your Vault.
+## Security Reimagined
 
-GRIPLOCK implements a **two-factor derivation model** where your Solana wallet is computed from:
+Crypto wallets have always relied on software. But software can be hacked, seed phrases exposed, and access stolen without a trace.
 
-1. **NFC Card UID** — The unique hardware identifier in your card
-2. **Your PIN** — A secret code only you know
+**GRIPLOCK changes everything by adding a physical security layer.**
 
-Neither factor alone can access the wallet. Both must be present simultaneously.
+<AccordionGroup>
+  <Accordion title="No Seed Phrases">
+    Nothing to write down. Nothing to lose. Nothing to steal.
+  </Accordion>
+  <Accordion title="Ephemeral Wallets">
+    Fresh keys generated on demand. Vanish when you're done. No persistent attack surface.
+  </Accordion>
+  <Accordion title="Zero Knowledge Authentication">
+    Prove ownership without exposing credentials. Privacy-preserving verification.
+  </Accordion>
+  <Accordion title="Auto-Lock Sessions">
+    15-minute activity timeout. Masked balances. Your financial data stays yours.
+  </Accordion>
+</AccordionGroup>
+
+## Two Factors. Total Control.
+
+Your NFC card becomes the ultimate lock. Combined with your PIN, they unlock everything.
 
 ```mermaid
 flowchart LR
     A[NFC Card] -->|UID| C[Key Derivation]
     B[Your PIN] -->|Secret| C
-    C --> D[Wallet Generated]
-    D --> E[Access Granted]
+    C --> D[Access Unlocked]
+    D --> E[Spend / Swap / Stake / Transfer]
 ```
 
-## The GRIPLOCK Difference
+| Without Card | Without PIN | With Both |
+|--------------|-------------|-----------|
+| No access | No access | Full access |
+| Nothing moves | Nothing moves | Everything unlocked |
 
-Traditional wallets store private keys, creating a single point of failure. GRIPLOCK takes a fundamentally different approach:
+## Features
 
-| Traditional Wallets | GRIPLOCK |
-|---------------------|----------|
-| Private key stored on device | No key storage anywhere |
-| Device theft = funds at risk | Card theft alone is useless |
-| Seed phrases can be stolen | Nothing to steal |
-| Complex backup procedures | Just remember your PIN |
+GRIPLOCK isn't just security. It's access.
 
-## How It Works
+<CardGroup cols={2}>
+  <Card title="Spend Anywhere" icon="cart-shopping">
+    Virtual Visa cards work everywhere Visa is accepted. Online shopping, subscriptions, global payments.
+  </Card>
+  <Card title="Top Up Instantly" icon="wallet">
+    Fund your virtual card directly from your wallet. Instant balance updates. No waiting.
+  </Card>
+  <Card title="Swap Tokens" icon="right-left">
+    Integrated DEX aggregators find the best rates. Swap any Solana token instantly.
+  </Card>
+  <Card title="Earn Yields" icon="chart-line">
+    Stake SOL with auto-compound. Maximize returns without manual intervention.
+  </Card>
+</CardGroup>
 
-<AccordionGroup>
-  <Accordion title="Tap Your Card">
-    Open the GRIPLOCK mobile app and tap any NFC card. The app reads the card's unique hardware identifier.
-  </Accordion>
-  <Accordion title="Enter Your PIN">
-    Input your secret PIN. The combination of card UID + PIN derives your wallet cryptographically.
-  </Accordion>
-  <Accordion title="Access Your Wallet">
-    Your Solana wallet appears on the dashboard with real balances, tokens, and transaction history.
-  </Accordion>
-  <Accordion title="Session Auto-Locks">
-    After 15 minutes of inactivity, your session expires. Tap again to re-access.
-  </Accordion>
-</AccordionGroup>
+## Built for Privacy
 
-## Use Cases
+<Steps>
+  <Step title="Zero Cloud Connection">
+    No tracking. No analytics. No data collection. Your activity stays on your device.
+  </Step>
+  <Step title="Privacy-Preserving KYC">
+    Zero knowledge proofs let you prove eligibility without revealing personal data.
+  </Step>
+  <Step title="Stealth Operation">
+    Dashboard and mobile app designed for discretion. Masked balances. Hidden activity.
+  </Step>
+</Steps>
 
-- **High-Security Storage** — Maximum protection without complex hardware wallets
-- **Cold Storage Access** — Ephemeral access to cold funds when needed
-- **Team Access Control** — Physical card presence required for transactions
-- **Point-of-Sale** — Tap-to-access for momentary wallet authorization
+## Tech Stack
+
+Built on cutting-edge decentralized infrastructure:
+
+| Layer | Technology |
+|-------|------------|
+| **Blockchain** | Solana — fast, low-fee transactions |
+| **Privacy** | Zero Knowledge proofs — prove without revealing |
+| **Storage** | Filecoin — decentralized, censorship-resistant |
+| **Security** | NFC + PIN derivation — hardware-grade protection |
 
 ## Get Started
 
