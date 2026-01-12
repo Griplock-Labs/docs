@@ -36,16 +36,8 @@
       "group": "Getting Started",
       "pages": [
         "introduction",
-        "quickstart"
-      ]
-    },
-    {
-      "group": "Features",
-      "pages": [
-        "features/cards",
-        "features/ramp",
-        "features/x402",
-        "features/privacy"
+        "quickstart",
+        "roadmap"
       ]
     },
     {
@@ -62,6 +54,15 @@
         "security/key-derivation",
         "security/encryption",
         "security/session-management"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "features/cards",
+        "features/ramp",
+        "features/x402",
+        "features/privacy"
       ]
     },
     {
