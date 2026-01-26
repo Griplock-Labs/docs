@@ -1,88 +1,73 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "GRIPLOCK",
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "GripLock",
   "logo": {
     "dark": "/images/logo.png",
     "light": "/images/logo.png"
   },
   "favicon": "/images/logo.png",
   "colors": {
-    "primary": "#A8B4C0",
-    "light": "#C5CED6",
-    "dark": "#0D0D0D"
+    "primary": "#00FFB2",
+    "light": "#00FFB2",
+    "dark": "#00FFB2"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "GitHub",
-        "href": "https://github.com/griplock"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Launch App",
-      "href": "https://griplock.app"
+  "navigation": [
+    {
+      "group": "Overview",
+      "pages": [
+        "overview/what-is-griplock",
+        "overview/design-principles",
+        "overview/what-griplock-is-not"
+      ]
+    },
+    {
+      "group": "How It Works",
+      "pages": [
+        "how-it-works/physical-intent",
+        "how-it-works/wallet-session-lifecycle",
+        "how-it-works/shielded-interaction-flow"
+      ]
+    },
+    {
+      "group": "Privacy Model",
+      "pages": [
+        "privacy-model/private-receive",
+        "privacy-model/shielded-balance",
+        "privacy-model/unshielding-by-intent"
+      ]
+    },
+    {
+      "group": "Security",
+      "pages": [
+        "security/key-derivation",
+        "security/encryption-model",
+        "security/session-management",
+        "security/loss-recovery"
+      ]
+    },
+    {
+      "group": "Current Capabilities",
+      "pages": [
+        "capabilities/whats-live",
+        "capabilities/whats-experimental",
+        "capabilities/known-limitations"
+      ]
+    },
+    {
+      "group": "Roadmap (Soft)",
+      "pages": [
+        "roadmap/areas-of-focus"
+      ]
+    },
+    {
+      "group": "FAQ",
+      "pages": [
+        "faq/faq"
+      ]
     }
-  },
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Getting Started",
-            "pages": ["introduction", "quickstart", "roadmap"]
-          },
-          {
-            "group": "Architecture",
-            "pages": [
-              "architecture/overview",
-              "architecture/data-flow",
-              "architecture/components"
-            ]
-          },
-          {
-            "group": "Security",
-            "pages": [
-              "security/key-derivation",
-              "security/encryption",
-              "security/session-management"
-            ]
-          },
-          {
-            "group": "Features",
-            "pages": [
-              "features/cards",
-              "features/ramp",
-              "features/x402",
-              "features/privacy"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Reference",
-            "pages": [
-              "api-reference/overview",
-              "api-reference/websocket",
-              "api-reference/payloads"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/griplockapp",
-      "github": "https://github.com/griplock"
-    }
-  },
-  "appearance": {
-    "default": "dark"
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/griplock",
+    "github": "https://github.com/griplock"
   }
 }
