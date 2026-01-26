@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
+  "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "GRIPLOCK",
   "logo": {
@@ -12,80 +12,77 @@
     "light": "#C5CED6",
     "dark": "#0D0D0D"
   },
-  "topbarLinks": [
-    {
-      "name": "GitHub",
-      "url": "https://github.com/griplock"
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/griplock"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Launch App",
+      "href": "https://griplock.app"
     }
-  ],
-  "topbarCtaButton": {
-    "name": "Launch App",
-    "url": "https://griplock.app"
   },
-  "tabs": [
-    {
-      "name": "Documentation",
-      "url": "/"
-    },
-    {
-      "name": "API Reference",
-      "url": "/api-reference"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": ["introduction", "quickstart", "roadmap"]
-    },
-    {
-      "group": "Architecture",
-      "pages": [
-        "architecture/overview",
-        "architecture/data-flow",
-        "architecture/components"
-      ]
-    },
-    {
-      "group": "Security",
-      "pages": [
-        "security/key-derivation",
-        "security/encryption",
-        "security/session-management"
-      ]
-    },
-    {
-      "group": "Features",
-      "pages": [
-        "features/cards",
-        "features/ramp",
-        "features/x402",
-        "features/privacy"
-      ]
-    },
-    {
-      "group": "API Reference",
-      "pages": [
-        "api-reference/overview",
-        "api-reference/websocket",
-        "api-reference/payloads"
-      ]
-    }
-  ],
-  "footerSocials": {
-    "x": "https://x.com/griplockapp",
-    "github": "https://github.com/griplock"
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction", "quickstart", "roadmap"]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/overview",
+              "architecture/data-flow",
+              "architecture/components"
+            ]
+          },
+          {
+            "group": "Security",
+            "pages": [
+              "security/key-derivation",
+              "security/encryption",
+              "security/session-management"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "features/cards",
+              "features/ramp",
+              "features/x402",
+              "features/privacy"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/overview",
+              "api-reference/websocket",
+              "api-reference/payloads"
+            ]
+          }
+        ]
+      }
+    ]
   },
-  "modeToggle": {
+  "footer": {
+    "socials": {
+      "x": "https://x.com/griplockapp",
+      "github": "https://github.com/griplock"
+    }
+  },
+  "appearance": {
     "default": "dark"
-  },
-  "font": {
-    "headings": {
-      "family": "JetBrains Mono",
-      "weight": 700
-    },
-    "body": {
-      "family": "Inter",
-      "weight": 400
-    }
   }
 }
