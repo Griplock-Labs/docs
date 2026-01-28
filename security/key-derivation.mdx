@@ -1,4 +1,95 @@
+# Key Derivation & Lifecycle
+
+Griplock does not store long-lived private keys.
+
+Instead, cryptographic keys are **derived locally**, used within a controlled wallet session, and discarded immediately when that session ends.
+
+This page describes how keys are created, used, and destroyed within the Griplock system.
+
 ---
-title: 'Key Derivation & Lifecycle'
-description: ''
+
+## No Persistent Keys
+
+Griplock does not maintain persistent private keys on:
+- Servers
+- User accounts
+- Background services
+
+Private keys do not exist unless an active wallet session exists.
+
+If there is no session, there are no usable keys.
+
 ---
+
+## Local Key Derivation
+
+Key derivation occurs only after a wallet session is explicitly created through physical intent.
+
+Derivation happens:
+- Locally on the user’s device
+- In volatile memory
+- Only for the duration of the session
+
+Private keys are never transmitted to Griplock servers or external services.
+
+---
+
+## Session-Bound Usage
+
+Once derived, keys are used exclusively within the active wallet session.
+
+During this period:
+- Transactions may be constructed and signed
+- On-chain interactions may be initiated
+- Signing capability is limited to the session scope
+
+There is no background signing and no delegated execution.
+
+---
+
+## Key Destruction
+
+When a wallet session ends, derived keys are immediately discarded.
+
+Session termination may occur due to:
+- Explicit user exit
+- Application closure
+- Session timeout
+- Local security conditions being violated
+
+After termination:
+- Keys are removed from memory
+- Signing capability no longer exists
+- The wallet becomes inaccessible again
+
+There is no key persistence between sessions.
+
+---
+
+## Re-Derivation on Demand
+
+To regain access, keys must be re-derived through a new wallet session.
+
+This requires:
+- Physical presence
+- NFC interaction
+- Local user confirmation
+
+Each session produces fresh, temporary access without relying on previously stored keys.
+
+---
+
+## Security Implications
+
+By deriving keys only when needed and destroying them afterward, Griplock:
+- Reduces exposure to long-lived key compromise
+- Prevents background or unattended signing
+- Limits the impact of device-level attacks
+
+Key availability is minimized by design.
+
+---
+
+> **Summary**  
+> In Griplock, private keys are not stored.  
+> They are derived when needed, used briefly, and destroyed completely.
