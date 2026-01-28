@@ -1,4 +1,92 @@
+# Wallet Session Lifecycle
+
+Griplock wallets do not exist permanently.
+
+Instead of maintaining a persistent wallet state, Griplock creates **temporary wallet sessions** that exist only for the duration of explicit user intent.
+
+This page describes how a wallet session is created, used, and terminated.
+
 ---
-title: 'Wallet Session Lifecycle'
-description: ''
+
+## 1. Session Creation
+
+A wallet session begins only when the user explicitly initiates access.
+
+To create a session, the user must:
+- Be physically present
+- Tap an NFC card
+- Confirm access locally on their device
+
+Only after these conditions are met does the system derive the necessary cryptographic material locally.
+
+If any step is missing, the session is not created.
+
 ---
+
+## 2. Local Key Derivation
+
+Once a session is authorized, cryptographic keys are derived **locally** on the user’s device.
+
+Key derivation:
+- Happens only during an active session
+- Does not rely on persistent storage
+- Does not transmit private keys to Griplock servers
+
+Derived keys exist only in memory and only for the duration of the session.
+
+---
+
+## 3. Active Session State
+
+While a wallet session is active:
+- Balances may become accessible
+- Transactions may be constructed and signed
+- On-chain interactions may be initiated
+
+All actions are bound to the active session.  
+There is no background signer and no autonomous execution.
+
+---
+
+## 4. Session Termination
+
+A wallet session ends when:
+- The user explicitly exits the session
+- The application is closed
+- The session times out
+- Local security conditions are violated
+
+When a session terminates:
+- Derived keys are discarded from memory
+- Signing capability is removed
+- The wallet becomes inaccessible again
+
+---
+
+## 5. Post-Session State
+
+After termination:
+- No wallet session exists
+- No keys remain in memory
+- No balances are accessible
+- No transactions can be signed
+
+To regain access, the user must re-initiate the full session creation process.
+
+---
+
+## Security Implications
+
+By limiting wallet existence to explicit sessions, Griplock reduces exposure to:
+- Remote exploitation
+- Background signing
+- Long-lived key compromise
+- Passive wallet interaction
+
+Security is enforced through **absence**, not persistence.
+
+---
+
+> **Summary**  
+> A Griplock wallet session is created intentionally, exists temporarily, and is destroyed completely.  
+> Wallet access is an event — not a constant state.
