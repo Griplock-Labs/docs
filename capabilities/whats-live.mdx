@@ -1,4 +1,81 @@
+# What's Live
+
+This page describes the functionality that is **currently implemented and available** in Griplock.
+
+Only features listed here should be considered production-ready.  
+Anything not listed here is either experimental or not part of the current system.
+
 ---
-title: "What's Live"
-description: ''
+
+## Core System Capabilities
+
+The following capabilities are live and operational as part of the Griplock system:
+
+- **NFC-based physical intent enforcement**  
+  Wallet sessions can only be created through explicit physical interaction and local user confirmation.
+
+- **Session-based wallet access**  
+  Wallet access exists only within an active, user-initiated session and is removed immediately when the session ends.
+
+- **Local key derivation**  
+  Cryptographic keys are derived locally during active sessions and are never stored persistently or transmitted to servers.
+
+- **Ephemeral wallet sessions**  
+  Wallet sessions are temporary by design and leave no residual access after termination.
+
 ---
+
+## Privacy Model (Live)
+
+The following privacy behaviors are currently enforced:
+
+- **Private Receive**  
+  Funds can be received without activating a wallet session or exposing interaction capability.
+
+- **Shielded balances by default**  
+  Received funds remain non-interactable until the user explicitly creates a wallet session.
+
+- **Unshielding by explicit intent**  
+  Interaction with funds requires physical presence and session-bound confirmation.
+
+---
+
+## Interaction Capabilities
+
+During an active wallet session, users can:
+
+- View balances
+- Sign transactions
+- Initiate supported on-chain interactions
+
+All interaction capability is strictly bound to the active session.
+
+---
+
+## Supported On-Chain Actions
+
+Griplock supports basic wallet-level on-chain actions, including:
+
+- Native transfers
+- Supported token transfers
+- Basic on-chain interactions required for standard wallet usage
+
+These actions do not execute without an active wallet session.
+
+---
+
+## What “Live” Means
+
+A feature is considered live if it:
+- Is implemented in the production codebase
+- Has a defined interaction flow
+- Does not rely on experimental assumptions
+- Adheres fully to Griplock’s design principles
+
+Anything outside this scope is not considered live.
+
+---
+
+> **Note**  
+> The list above reflects the current state of the system and may evolve over time.  
+> No guarantees are made about feature permanence or future availability.
