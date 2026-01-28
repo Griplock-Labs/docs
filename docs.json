@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "aspen",
   "name": "GripLock",
   "logo": {
     "dark": "/images/logo.png",
@@ -8,9 +8,9 @@
   },
   "favicon": "/images/logo.png",
   "colors": {
-    "primary": "#00FFB2",
-    "light": "#00FFB2",
-    "dark": "#00FFB2"
+    "primary": "#000000",
+    "light": "#FFFFFF",
+    "dark": "#000000"
   },
   "navigation": {
     "tabs": [
