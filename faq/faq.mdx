@@ -1,4 +1,142 @@
+# FAQ
+
+This page answers common questions about Griplock’s design, behavior, and scope.
+
 ---
-title: 'FAQ'
-description: ''
+
+## Is Griplock a wallet?
+
+Griplock is not a traditional always-on wallet.
+
+It is a **privacy and control layer** that creates temporary wallet sessions only when the user explicitly initiates access through physical intent.
+
 ---
+
+## Does Griplock custody funds or keys?
+
+No.
+
+Griplock does not custody funds, private keys, or recovery data.  
+All assets remain fully owned and controlled by the user on-chain.
+
+---
+
+## Is Griplock a card issuer or payment service?
+
+No.
+
+Griplock does not issue cards, provide card programs, or operate as a payment processor.  
+NFC is used solely as a mechanism for local authentication and physical intent enforcement.
+
+---
+
+## Is Griplock a mixer or privacy obfuscation tool?
+
+No.
+
+Griplock does not pool, reroute, or obfuscate transactions.  
+It does not hide balances or alter blockchain transparency.
+
+Privacy is enforced by controlling **when and how interaction is possible**, not by modifying on-chain data.
+
+---
+
+## Are funds hidden from the blockchain?
+
+No.
+
+Funds always remain on-chain and verifiable.  
+Griplock does not remove, disguise, or mask blockchain data.
+
+---
+
+## Does Griplock provide anonymity?
+
+No.
+
+Griplock reduces interaction exposure.  
+It does not provide anonymity or unlinkability guarantees.
+
+---
+
+## Can Griplock recover my wallet if I lose access?
+
+No.
+
+Griplock cannot recover wallets, reset access, or bypass security controls.  
+If required access factors are lost, funds remain on-chain but may be inaccessible through Griplock.
+
+---
+
+## What happens if my phone is lost?
+
+If a device is lost:
+- No active wallet session remains
+- No signing capability exists
+- Funds remain unaffected on-chain
+
+Access can only be re-established by recreating a wallet session using the required access factors.
+
+---
+
+## What happens if my NFC card is lost?
+
+An NFC card alone does not grant access.
+
+Additional local confirmation is always required to create a wallet session.  
+Loss of an NFC card does not automatically compromise funds.
+
+---
+
+## Does Griplock support swaps?
+
+Swaps may be supported as a **basic wallet capability**.
+
+They are not a core product focus and are not treated as financial services or yield strategies.
+
+---
+
+## Can Griplock be automated or used with bots?
+
+No.
+
+Griplock does not support background signing, automation, scheduled actions, or delegated execution.
+
+All interactions require real-time user intent.
+
+---
+
+## Is Griplock production-ready?
+
+Only features listed under **What’s Live** should be considered production-ready.
+
+Anything labeled experimental may change, be removed, or never reach production.
+
+---
+
+## Why is Griplock designed this way?
+
+Griplock prioritizes:
+- Explicit user intent
+- Reduced exposure
+- Absence of always-on access
+
+These design choices trade convenience for control and security.
+
+---
+
+## Where can I learn more about how it works?
+
+Start with:
+- *What is Griplock*
+- *How It Works*
+- *Privacy Model*
+- *Security*
+
+These sections describe the system in detail.
+
+---
+
+> **Summary**  
+> Griplock is designed to give users control over when their wallet exists and can be used.  
+> It reduces exposure by refusing to be always available.
