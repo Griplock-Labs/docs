@@ -1,4 +1,98 @@
+# Shielded Balance
+
+A shielded balance refers to funds that exist on-chain but are **not immediately usable**.
+
+Shielding in Griplock is a control state, not an obfuscation technique.  
+Funds are not hidden, altered, or removed from the blockchain.
+
+What changes is **interaction availability**, not ownership or visibility.
+
 ---
-title: 'Shielded Balance'
-description: ''
+
+## What “Shielded” Means
+
+In Griplock, a balance is considered shielded when:
+- Funds are owned by the user on-chain
+- No active wallet session exists
+- Signing capability is unavailable
+
+Shielded balances cannot be interacted with until the user explicitly creates a wallet session through physical intent.
+
 ---
+
+## Shielded by Default
+
+Balances received through Griplock flows are shielded by default.
+
+This means:
+- Funds can be received at any time
+- Balances remain inactive during idle periods
+- No background wallet or signer exists
+
+Shielding prevents balances from being accidentally or remotely accessed when the user is not present.
+
+---
+
+## No UI Masking
+
+Shielded balance is not a UI feature.
+
+It is not achieved by:
+- Hiding numbers in the interface
+- Blurring balances
+- Delaying display only
+
+Shielding is enforced at the system level by the absence of an active wallet session.
+
+If no session exists, the balance cannot be used — regardless of what the UI shows.
+
+---
+
+## Session-Bound Availability
+
+When a wallet session is created:
+- Shielded balances become temporarily usable
+- Signing capability is enabled
+- Interaction is permitted only within that session
+
+Once the session ends:
+- Signing capability is removed
+- Balances return to a shielded state
+- No residual access remains
+
+Shielding and unshielding are tied strictly to session state.
+
+---
+
+## What Shielded Balance Does and Does Not Do
+
+Shielded balance does:
+- Reduce exposure during idle periods
+- Limit automated or background interaction
+- Enforce explicit user intent before usage
+
+Shielded balance does not:
+- Hide balances from the blockchain
+- Obfuscate transaction history
+- Pool or reroute funds
+- Provide anonymity guarantees
+
+Griplock does not alter blockchain transparency.  
+It alters **when balances can be acted upon**.
+
+---
+
+## Security Implications
+
+By keeping balances shielded when no session exists, Griplock:
+- Reduces the attack surface of dormant wallets
+- Prevents background signing
+- Limits passive wallet probing
+
+Security is achieved by making inactivity the safest state.
+
+---
+
+> **Summary**  
+> A shielded balance is owned, verifiable, and on-chain — but unusable by default.  
+> Interaction is unlocked only through explicit, session-bound user intent.
