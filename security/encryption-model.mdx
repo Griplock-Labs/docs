@@ -1,4 +1,102 @@
+# Encryption Model
+
+Griplock uses encryption to protect data **during active wallet sessions**.
+
+Encryption in Griplock is designed to secure communication and session data without introducing persistent secrets, centralized key storage, or long-lived credentials.
+
+This page describes how encryption is used within the system and what it is intended to protect.
+
 ---
-title: 'Encryption Model'
-description: ''
+
+## Scope of Encryption
+
+Encryption in Griplock applies to:
+- Session communication between client components
+- Locally derived session data
+- Temporary interaction state during an active wallet session
+
+Encryption does not replace key management or custody controls.  
+It complements the session-based security model.
+
 ---
+
+## Session-Scoped Encryption
+
+All encrypted communication in Griplock is scoped to an active wallet session.
+
+This means:
+- Encryption keys are created per session
+- Keys are not reused across sessions
+- Encrypted channels cease to exist when the session ends
+
+There are no long-lived encryption keys tied to user accounts or devices.
+
+---
+
+## End-to-End Session Protection
+
+During an active session:
+- Data exchanged between client components is encrypted
+- Session state is protected from passive observation
+- Communication is secured against interception and tampering
+
+Griplock does not rely on encrypted storage of long-term secrets.  
+Encryption exists only to protect **in-flight and in-memory session data**.
+
+---
+
+## No Server-Side Decryption
+
+Griplock servers do not have access to plaintext private keys, signing material, or decrypted session state.
+
+Servers act only as:
+- Transport layers
+- Coordination endpoints
+
+They are unable to independently decrypt or reconstruct wallet sessions.
+
+---
+
+## Ephemeral Encryption Keys
+
+Encryption keys in Griplock are:
+- Generated locally
+- Bound to the active session
+- Stored only in volatile memory
+- Discarded immediately when the session ends
+
+Once a session terminates, encrypted data becomes unusable.
+
+---
+
+## What the Encryption Model Does and Does Not Do
+
+Encryption does:
+- Protect session communication
+- Prevent passive interception
+- Limit exposure during active use
+
+Encryption does not:
+- Enable account recovery
+- Create persistent identity
+- Provide anonymity guarantees
+- Replace physical intent requirements
+
+Encryption supports the system.  
+It does not override Griplock’s intent-first model.
+
+---
+
+## Security Implications
+
+By limiting encryption to active sessions, Griplock:
+- Avoids long-lived encrypted attack surfaces
+- Reduces key reuse risk
+- Ensures session termination also terminates cryptographic access
+
+Security is enforced through **ephemerality**, not accumulation.
+
+---
+
+> **Summary**  
+> Encryption in Griplock protects active sessions — not dormant w
