@@ -1,4 +1,91 @@
+# Unshielding by Intent
+
+Unshielding in Griplock is the act of temporarily enabling interaction with shielded funds through explicit user intent.
+
+Unshielding does not change ownership, fund location, or on-chain state.  
+It only enables **session-bound usability**.
+
 ---
-title: 'Unshielding by Intent'
-description: ''
+
+## What Unshielding Is
+
+Unshielding allows:
+- Temporary access to shielded balances
+- Transaction signing within an active wallet session
+- Explicit, user-approved interaction with funds
+
+Unshielding is always:
+- Intentional
+- Time-limited
+- Bound to an active wallet session
+
 ---
+
+## What Unshielding Is Not
+
+Unshielding is not:
+- Automatic
+- Persistent
+- A change in custody
+- A change in on-chain visibility
+
+Funds do not become permanently unlocked.  
+They remain shielded by default outside of an active session.
+
+---
+
+## How Unshielding Occurs
+
+Unshielding can occur only when the user:
+- Is physically present
+- Creates an active wallet session via NFC
+- Confirms the intended interaction locally
+
+Without all of these conditions, unshielding cannot happen.
+
+There is no background or delayed unshielding process.
+
+---
+
+## Session-Bound Access
+
+When a wallet session is active:
+- Shielded balances become usable
+- Signing capability is enabled
+- Interactions are allowed only within that session
+
+Once the session ends:
+- Signing capability is removed
+- Balances automatically return to a shielded state
+- No residual access remains
+
+Unshielding is reversible by default through session termination.
+
+---
+
+## Explicit Control Model
+
+Unshielding places control directly in the user’s hands.
+
+There is no silent unlock.  
+There is no delegated access.  
+There is no automated usage.
+
+Every interaction requires conscious user action at the time it occurs.
+
+---
+
+## Security and Privacy Implications
+
+By enforcing unshielding through explicit intent, Griplock:
+- Prevents unintended fund usage
+- Reduces exposure to remote exploitation
+- Eliminates background interaction risk
+
+Privacy is preserved by ensuring that usability exists only when the user is present and engaged.
+
+---
+
+> **Summary**  
+> In Griplock, unshielding is not a mode you turn on.  
+> It is a temporary state created by explicit user intent — and removed automatically when that intent ends.
