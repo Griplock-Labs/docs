@@ -1,4 +1,75 @@
+# Private Receive
+
+Private Receive allows funds to be received without immediately exposing them for interaction.
+
+It separates the act of **receiving funds** from the ability to **use funds**, reducing unnecessary exposure during idle periods.
+
+Funds received through Private Receive always remain on-chain and verifiable.
+
 ---
-title: 'Private Receive'
-description: ''
+
+## What Private Receive Does
+
+Private Receive enables:
+- Receiving funds without activating a wallet session
+- Holding funds in a non-interactable state by default
+- Delaying balance usability until explicit user intent is provided
+
+Receiving funds does not grant signing capability.  
+Interaction remains locked until a wallet session is created.
+
 ---
+
+## How Private Receive Works
+
+Private Receive operates through the same session-based model as the rest of Griplock.
+
+When funds are sent to a Griplock-derived address:
+- The transaction is recorded on-chain
+- Ownership is preserved
+- No wallet session is created automatically
+
+Without an active wallet session:
+- No private keys are derived
+- No transactions can be signed
+- No on-chain actions can be initiated
+
+---
+
+## No Always-On Wallet
+
+Private Receive does not rely on an always-on wallet.
+
+Funds can be received at any time, but the wallet itself only exists when the user explicitly creates a session through physical intent.
+
+This ensures that receiving funds does not expand the attack surface.
+
+---
+
+## What Private Receive Is Not
+
+Private Receive is not:
+- A mixer or tumbling mechanism
+- A way to hide funds from the blockchain
+- A method for anonymizing transactions
+
+It does not alter transaction history, routing, or on-chain visibility.
+
+Privacy is achieved by limiting **interaction availability**, not by modifying blockchain data.
+
+---
+
+## Security and Privacy Benefits
+
+By decoupling receipt from interaction, Private Receive:
+- Reduces passive wallet exposure
+- Prevents unintended interaction
+- Limits automated or remote exploitation attempts
+
+Funds remain safe, inactive, and unusable until the user intentionally unlocks access.
+
+---
+
+> **Summary**  
+> Private Receive allows funds to arrive without waking the wallet.  
+> Access remains locked until the user explicitly chooses to interact.
