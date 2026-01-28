@@ -1,4 +1,97 @@
+Griplock is designed to enforce privacy and control through explicit user intent.
+
+This design introduces intentional limitations.  
+They are not bugs or missing features — they are deliberate trade-offs aligned with the system’s goals.
+
 ---
-title: 'Known Limitations'
-description: ''
+
+## No Always-On Access
+
+Griplock does not provide continuous wallet availability.
+
+If no wallet session exists:
+- No balances are usable  
+- No transactions can be signed  
+- No interactions can occur  
+
+Users must explicitly create a new wallet session each time access is needed.
+
 ---
+
+## Slower Access Compared to Traditional Wallets
+
+Because access requires physical intent and local confirmation:
+- Wallet access may be slower than always-on wallets  
+- Background usage is not supported  
+
+This trade-off is intentional and central to reducing exposure.
+
+---
+
+## No Automated or Delegated Usage
+
+Griplock does not support:
+- Scheduled transactions  
+- Background signing  
+- Bots or automated scripts  
+- Delegated or third-party execution  
+
+All interactions require real-time user presence and intent.
+
+---
+
+## No Custodial Recovery
+
+Griplock cannot recover wallets or reset access on behalf of users.
+
+If required access factors are lost:
+- Griplock cannot bypass security controls  
+- Funds remain on-chain but may be inaccessible through Griplock  
+
+There is no centralized recovery or override mechanism.
+
+---
+
+## Limited Compatibility with Third-Party Tools
+
+Some external tools assume:
+- Persistent wallets  
+- Background signers  
+- Continuous connectivity  
+
+These assumptions may not align with Griplock’s session-based model, resulting in limited or no compatibility.
+
+---
+
+## Privacy Is Not Anonymity
+
+Griplock reduces interaction exposure.  
+It does not provide anonymity or unlinkability.
+
+Blockchain-level transparency remains unchanged.
+
+---
+
+## Experimental Feature Stability
+
+Features labeled as experimental:
+- May change or be removed  
+- May behave inconsistently  
+- Are not guaranteed to reach production  
+
+Experimental functionality should not be relied upon for critical use cases.
+
+---
+
+## Evolving System
+
+Griplock is an evolving system.
+
+Behavior, capabilities, and limitations may change as the system matures.  
+Documentation reflects the current state and does not imply future guarantees.
+
+---
+
+> **Summary**  
+> Griplock trades convenience and automation for control and reduced exposure.  
+> These limitations are intentional and fundamental to its design.
