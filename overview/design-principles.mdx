@@ -1,4 +1,90 @@
+# Design Principles
+
+Griplock is built around a small set of strict design principles.
+
+These principles are not feature goals or marketing claims.  
+They are intentional constraints that define what the system allows, what it refuses to do, and why certain trade-offs exist.
+
 ---
-title: 'Design Principles'
-description: ''
+
+## Privacy by Default
+
+Griplock assumes that wallet activity should not be continuously visible or interactable.
+
+Balances, accounts, and interaction capability are not persistently exposed.  
+They become usable only when the user explicitly initiates access.
+
+Privacy is enforced at the **interaction layer**, not simulated through UI masking or visual obfuscation.
+
 ---
+
+## Physical Intent Over Software Assumptions
+
+Griplock introduces physical intent as a core security primitive.
+
+A wallet session requires:
+- Physical presence
+- An NFC tap
+- Local user confirmation
+
+This removes reliance on:
+- Always-on private keys
+- Background signers
+- Remote or automated triggers
+
+If there is no physical action, there is no active wallet session.
+
+---
+
+## Ephemeral by Design
+
+Griplock wallets are ephemeral by default.
+
+Keys are derived locally when needed, used within an active session, and discarded afterward.  
+There is no persistent wallet state stored on Griplock servers.
+
+A wallet exists only for the duration of user intent.
+
+---
+
+## No Custody, No Trust
+
+Griplock does not custody funds, keys, or balances.
+
+The system is designed so that:
+- Griplock cannot move funds
+- Griplock cannot access balances
+- Griplock cannot reconstruct wallets independently
+
+Users retain full control and responsibility over their assets at all times.
+
+---
+
+## Reduced Attack Surface
+
+By removing persistent access and background availability, Griplock reduces exposure to:
+- Automated signing
+- Remote exploitation
+- Passive wallet scanning
+- Session replay risks
+
+Security is achieved by limiting **availability**, not by adding additional permissions or complexity.
+
+---
+
+## Explicit Trade-offs
+
+Griplock prioritizes control and safety over convenience.
+
+This means:
+- Slower access compared to always-on wallets
+- Physical interaction requirements
+- No silent or automated usage
+
+These trade-offs are deliberate and central to the system’s purpose.
+
+---
+
+> **Note**  
+> These principles guide all current and future Griplock components.  
+> Features that conflict with these principles are either experimental or intentionally excluded.
