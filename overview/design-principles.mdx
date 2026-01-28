@@ -3,7 +3,7 @@
 Griplock is built around a small set of deliberate design principles.
 
 These principles are not feature goals or marketing claims.  
-They define the constraints of the system and guide how every component is designed and evaluated.
+They define the constraints of the system and serve as the basis for all design and implementation decisions.
 
 ---
 
@@ -38,12 +38,12 @@ If there is no physical action, there is no active wallet session.
 
 ## Ephemeral by Design
 
-Griplock wallets are ephemeral by default.
+Griplock wallet sessions are ephemeral by default.
 
 Keys are derived locally when needed, used within an active session, and discarded afterward.  
 There is no persistent wallet state stored on Griplock servers.
 
-A wallet exists only for the duration of user intent.
+A wallet session exists only for the duration of user intent.
 
 ---
 
