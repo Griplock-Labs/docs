@@ -1,9 +1,9 @@
 # Design Principles
 
-Griplock is built around a small set of strict design principles.
+Griplock is built around a small set of deliberate design principles.
 
 These principles are not feature goals or marketing claims.  
-They are intentional constraints that define what the system allows, what it refuses to do, and why certain trade-offs exist.
+They define the constraints of the system and guide how every component is designed and evaluated.
 
 ---
 
@@ -14,7 +14,7 @@ Griplock assumes that wallet activity should not be continuously visible or inte
 Balances, accounts, and interaction capability are not persistently exposed.  
 They become usable only when the user explicitly initiates access.
 
-Privacy is enforced at the **interaction layer**, not simulated through UI masking or visual obfuscation.
+Privacy is enforced through **system behavior**, not UI masking or visual obfuscation.
 
 ---
 
@@ -63,18 +63,18 @@ Users retain full control and responsibility over their assets at all times.
 ## Reduced Attack Surface
 
 By removing persistent access and background availability, Griplock reduces exposure to:
+- Passive wallet tracking and attribution
 - Automated signing
 - Remote exploitation
-- Passive wallet scanning
 - Session replay risks
 
-Security is achieved by limiting **availability**, not by adding additional permissions or complexity.
+Security is achieved by limiting **availability**, not by adding more permissions or complexity.
 
 ---
 
 ## Explicit Trade-offs
 
-Griplock prioritizes control and safety over convenience.
+Griplock intentionally prioritizes control and safety over convenience.
 
 This means:
 - Slower access compared to always-on wallets
