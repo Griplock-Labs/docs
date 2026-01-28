@@ -1,4 +1,108 @@
+# Shielded Interaction Flow
+
+Griplock introduces a shielded interaction model that separates **fund existence** from **fund usability**.
+
+Funds always remain on-chain.  
+What Griplock controls is **when and how** those funds become interactable.
+
+This page describes how shielded interactions work from receiving funds to unshielding them through explicit user intent.
+
 ---
-title: 'Shielded Interaction Flow'
-description: ''
+
+## Shielded by Default
+
+When funds are received through a Griplock-enabled wallet flow, they are treated as **shielded** by default.
+
+Shielded means:
+- Funds exist on-chain
+- Ownership is preserved
+- Interaction capability is restricted
+
+Balances are not immediately exposed for use until the user explicitly initiates access through a wallet session.
+
 ---
+
+## Receiving Funds
+
+Receiving funds does not require an active wallet session.
+
+Funds can be sent to a Griplock-derived address at any time.  
+They remain on-chain and verifiable, but **inactive** from an interaction standpoint.
+
+No signing capability exists until the user creates a wallet session through physical intent.
+
+---
+
+## Interaction Requires an Active Session
+
+To interact with shielded funds, the user must:
+- Create a wallet session via NFC and local confirmation
+- Explicitly unlock interaction capability
+
+Without an active session:
+- Funds cannot be moved
+- Transactions cannot be signed
+- On-chain actions cannot be initiated
+
+Shielding is enforced by the system, not by UI state.
+
+---
+
+## Unshielding by Intent
+
+Unshielding is not automatic.
+
+It occurs only when the user:
+- Is physically present
+- Creates an active wallet session
+- Confirms the intended interaction locally
+
+Unshielding enables temporary access to balances for the purpose of a specific action.
+
+Once the session ends, funds return to a shielded, non-interactable state.
+
+---
+
+## Session-Bound Interaction
+
+All interactions with shielded funds are:
+- Bound to the active wallet session
+- Time-limited
+- Non-persistent
+
+There is no background access and no lingering signing capability once the session ends.
+
+---
+
+## What Shielding Does and Does Not Do
+
+Shielding does:
+- Reduce passive wallet exposure
+- Limit unintended or automated interaction
+- Enforce explicit user intent before usage
+
+Shielding does not:
+- Remove funds from the blockchain
+- Hide transaction history
+- Obfuscate on-chain data
+- Pool or reroute assets
+
+Griplock does not alter blockchain transparency.  
+It alters **interaction availability**.
+
+---
+
+## Security and Privacy Implications
+
+By decoupling receipt from interaction, Griplock:
+- Reduces attack surface during idle periods
+- Prevents background signing
+- Limits exposure to wallet probing and automation
+
+Privacy is achieved through **controlled access**, not through obfuscation.
+
+---
+
+> **Summary**  
+> In Griplock, funds can exist without being usable.  
+> Interaction is unlocked only by explicit, physical user intent — and only for the duration of a session.
