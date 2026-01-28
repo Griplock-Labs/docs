@@ -22,7 +22,8 @@
             "pages": [
               "overview/what-is-griplock",
               "overview/design-principles",
-              "overview/what-griplock-is-not"
+              "overview/what-griplock-is-not",
+              "documentation/overview/token-overview"
             ]
           },
           {
@@ -60,11 +61,15 @@
           },
           {
             "group": "Roadmap (Soft)",
-            "pages": ["roadmap/areas-of-focus"]
+            "pages": [
+              "roadmap/areas-of-focus"
+            ]
           },
           {
             "group": "FAQ",
-            "pages": ["faq/faq"]
+            "pages": [
+              "faq/faq"
+            ]
           }
         ]
       }
