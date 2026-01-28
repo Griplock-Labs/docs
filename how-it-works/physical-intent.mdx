@@ -1,4 +1,87 @@
+# Physical Intent (NFC)
+
+Griplock uses NFC as a mechanism to enforce **physical intent**.
+
+Physical intent means that wallet access and interaction require deliberate, real-world user action — not just software execution or remote input.
+
+This introduces a human-in-the-loop constraint that cannot be replicated by background processes, bots, or remote attackers.
+
 ---
-title: 'Physical Intent (NFC)'
-description: ''
+
+## Why Physical Intent Matters
+
+Most wallet systems rely entirely on software-based assumptions.
+
+If a private key exists in memory or storage, it can be:
+- Triggered remotely
+- Accessed by malware
+- Used by automated scripts
+- Exploited without the user’s awareness
+
+Griplock changes this model by requiring **physical presence** before a wallet session can exist.
+
 ---
+
+## NFC as an Intent Gate
+
+In Griplock, NFC is not used for payments or card programs.
+
+It is used as an **intent gate**.
+
+To activate a wallet session, a user must:
+- Be physically present
+- Tap an NFC card
+- Confirm access locally on their device
+
+Without this physical action, the system refuses to create a wallet session.
+
+---
+
+## Why NFC (and Not Biometrics Alone)
+
+Biometrics and PINs prove identity.  
+They do not prove presence.
+
+NFC introduces a second dimension:
+- Something the user physically has
+- Something that must be consciously presented
+
+This reduces exposure to:
+- Remote compromise
+- Background signing
+- Silent wallet activation
+
+NFC ensures that access is intentional, observable, and interruptible by the user.
+
+---
+
+## No NFC, No Session
+
+If there is no NFC interaction:
+- No wallet session is created
+- No keys are derived
+- No balances become accessible
+- No transactions can be initiated
+
+Physical intent is not an added security layer.  
+It is a **precondition** for wallet existence.
+
+---
+
+## Scope and Limitations
+
+NFC in Griplock does not:
+- Store private keys
+- Contain balances
+- Act as a payment instrument
+
+It is a local signal used solely to authorize the creation of a wallet session.
+
+Loss or replacement of an NFC card does not grant access on its own.  
+Additional local confirmation is always required.
+
+---
+
+> **Summary**  
+> NFC in Griplock is not about cards or payments.  
+> It is about enforcing human intent before a wallet can exist.
