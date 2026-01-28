@@ -1,4 +1,98 @@
+# Loss & Recovery Assumptions
+
+Griplock is designed around user-controlled security and explicit intent.
+
+As a result, recovery behavior in Griplock follows a strict assumption model.  
+This page explains what can and cannot be recovered, and under what conditions.
+
 ---
-title: 'Loss & Recovery Assumptions'
-description: ''
+
+## No Custodial Recovery
+
+Griplock does not custody keys, accounts, or recovery data.
+
+This means:
+- Griplock cannot restore wallets on behalf of users
+- Griplock cannot reset access independently
+- Griplock cannot bypass security controls
+
+There is no centralized recovery mechanism.
+
 ---
+
+## Session-Based Access Implications
+
+Wallet access in Griplock is session-based and ephemeral.
+
+If a session ends:
+- Keys are destroyed
+- Signing capability is removed
+- Access must be re-initiated through physical intent
+
+There is no persistent login or background access to recover.
+
+---
+
+## Loss of Device
+
+If a user loses their device:
+- No active wallet session remains
+- No signing capability exists
+- Funds remain on-chain and unaffected
+
+Access can be regained only by recreating a wallet session on a new device using the same required inputs and credentials.
+
+Griplock does not store backups of user keys or sessions.
+
+---
+
+## Loss of NFC Card
+
+If an NFC card is lost or replaced:
+- The card alone does not grant access
+- Additional local confirmation is always required
+
+Loss of an NFC card does not automatically compromise funds, but it may prevent session creation until a replacement is configured according to the user’s setup.
+
+---
+
+## Loss of Multiple Factors
+
+If required access factors are lost simultaneously (e.g., device and credentials):
+- Griplock cannot reconstruct access
+- Funds remain on-chain but inaccessible through Griplock
+
+Users are responsible for maintaining their own access continuity.
+
+---
+
+## User Responsibility Model
+
+Griplock enforces intent and access boundaries.  
+It does not remove user responsibility.
+
+Users are responsible for:
+- Safeguarding required access factors
+- Understanding session-based behavior
+- Managing their own operational security
+
+Griplock provides control, not guarantees.
+
+---
+
+## Why These Assumptions Exist
+
+These assumptions are intentional.
+
+They ensure that:
+- No backdoors exist
+- No silent recovery paths are available
+- No third party can regain access without user involvement
+
+Security is preserved by refusing to offer shortcuts.
+
+---
+
+> **Summary**  
+> Griplock cannot recover what it never stores.  
+> Access exists only when the user can explicitly recreate it.
