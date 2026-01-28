@@ -1,4 +1,101 @@
+# Session Management
+
+Griplock manages wallet access through explicitly bounded **wallet sessions**.
+
+A session defines when a wallet can exist, interact, and sign transactions.  
+Outside of an active session, no wallet access is possible.
+
+This page describes how sessions are created, maintained, and terminated.
+
 ---
-title: 'Session Management'
-description: ''
+
+## Session Creation Conditions
+
+A wallet session can be created only when all required conditions are met.
+
+These conditions include:
+- Physical presence of the user
+- NFC interaction
+- Local user confirmation
+
+If any condition is missing or fails validation, the session is not created.
+
+There is no background or automatic session creation.
+
 ---
+
+## Active Session State
+
+While a session is active:
+- Signing capability is enabled
+- Shielded balances may become usable
+- On-chain interactions may be initiated
+
+All actions are strictly scoped to the active session.  
+There is no persistence beyond it.
+
+---
+
+## Session Boundaries
+
+Each wallet session is:
+- Isolated from previous sessions
+- Independent of future sessions
+- Bound to a single intent window
+
+Session data is not shared or reused across sessions.
+
+Once a session ends, it cannot be resumed.
+
+---
+
+## Session Termination
+
+A session terminates under any of the following conditions:
+- The user explicitly exits the session
+- The application is closed
+- A predefined inactivity timeout is reached
+- Local security constraints are violated
+
+Session termination is immediate and irreversible.
+
+---
+
+## Post-Termination Behavior
+
+When a session ends:
+- Derived keys are destroyed
+- Encryption keys are discarded
+- Signing capability is removed
+- Balances return to a shielded, non-interactable state
+
+No residual access remains after termination.
+
+---
+
+## No Background Sessions
+
+Griplock does not support:
+- Background wallet sessions
+- Silent reactivation
+- Deferred signing
+- Delegated session control
+
+Every session requires fresh, explicit user intent.
+
+---
+
+## Security Implications
+
+By enforcing strict session boundaries, Griplock:
+- Limits the impact of device compromise
+- Prevents long-lived access
+- Eliminates unattended wallet usage
+
+Session existence is treated as a **privilege**, not a default state.
+
+---
+
+> **Summary**  
+> In Griplock, wallet access is session-based, temporary, and explicit.  
+> When a session ends, access ends with it.
