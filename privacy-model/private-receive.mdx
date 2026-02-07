@@ -13,24 +13,28 @@ Private Receive enables:
 - Holding funds in a non-interactable state by default
 - Delaying balance usability until explicit user intent is provided
 
-Receiving funds does not grant signing capability.  
-Interaction remains locked until a wallet session is created.
+Receiving funds does not trigger MASTER_SECRET reconstruction.
+No signing capability exists until the user explicitly initiates a session.
 
 ---
 
 ## How Private Receive Works
 
-Private Receive operates through the same session-based model as the rest of Griplock.
+Private Receive operates through the V2 session-based model.
 
-When funds are sent to a Griplock-derived address:
+When funds are sent to a GripLock wallet address:
 - The transaction is recorded on-chain
 - Ownership is preserved
 - No wallet session is created automatically
+- No MASTER_SECRET is reconstructed
 
 Without an active wallet session:
-- No private keys are derived
+- No MASTER_SECRET exists in memory
+- No signing keys are derived
 - No transactions can be signed
 - No on-chain actions can be initiated
+
+Even if a session cache exists from a prior session, receiving funds does not reactivate it. Access requires explicit user intent through NFC and authentication.
 
 ---
 
@@ -38,7 +42,9 @@ Without an active wallet session:
 
 Private Receive does not rely on an always-on wallet.
 
-Funds can be received at any time, but the wallet itself only exists when the user explicitly creates a session through physical intent.
+Funds can be received at any time, but the wallet's signing capability only exists when the user explicitly creates a session through physical intent and factor authentication.
+
+The MASTER_SECRET — from which the wallet's keypair is derived — is never persistently stored in plaintext. It must be reconstructed from Shamir shares or retrieved from a valid session cache before any interaction is possible.
 
 This ensures that receiving funds does not expand the attack surface.
 
@@ -63,11 +69,18 @@ By decoupling receipt from interaction, Private Receive:
 - Reduces passive wallet exposure
 - Prevents unintended interaction
 - Limits automated or remote exploitation attempts
+- Keeps the MASTER_SECRET unrecoverable until explicit intent
 
-Funds remain safe, inactive, and unusable until the user intentionally unlocks access.
+Funds remain safe, inactive, and unusable until the user intentionally unlocks access through NFC tap and factor authentication.
 
 ---
 
-> **Summary**  
-> Private Receive allows funds to arrive without waking the wallet.  
-> Access remains locked until the user explicitly chooses to interact.
+> **Summary**
+> Private Receive allows funds to arrive without waking the wallet.
+> No keys are derived and no MASTER_SECRET is reconstructed until the user explicitly chooses to interact.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

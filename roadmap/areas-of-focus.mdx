@@ -1,46 +1,119 @@
-This page outlines the **current areas of focus** for Griplock.
+This page outlines the **current areas of focus** for GripLock.
 
-It is not a product roadmap and does not represent commitments, timelines, or guaranteed feature delivery.  
+It is not a product roadmap and does not represent commitments, timelines, or guaranteed feature delivery.
 All areas described here are subject to change as the system evolves.
+
+---
+
+## Execution Policy Layer
+
+GripLock is exploring per-wallet policy definitions that govern what actions a wallet session can perform.
+
+This includes:
+- Maximum transaction value limits
+- Allowed programs and contract restrictions
+- Time-window-based access controls
+- Policy-scoped transaction authorization
+
+Execution policies would operate as a layer above session-based signing, adding granular control over what is permitted within a session.
+
+---
+
+## Human Intent Gating at Scale
+
+NFC-based physical intent is being refined for broader operational coverage.
+
+Areas of focus include:
+- NFC tap as physical authorization for high-value or sensitive operations
+- Tiered intent requirements based on transaction risk
+- Consistent intent gating across expanded capabilities
+- Maintaining physical presence as a security boundary at scale
+
+Intent gating ensures that critical operations always require conscious user action.
+
+---
+
+## Agent Execution Compatibility
+
+GripLock is exploring support for agent-initiated transactions that operate within user-defined policy bounds.
+
+This includes:
+- Agents executing transactions on behalf of the user
+- Execution constrained by wallet-level policies
+- Agents operating without custody of keys or MASTER_SECRET
+- User-defined boundaries and revocation controls
+
+The core principle is preserved: agents execute but never custody. The user retains control over policy definitions and can revoke agent access at any time.
+
+---
+
+## Programmable Authorization
+
+Conditional authorization rules are being explored as an extension to the session and policy model.
+
+This includes:
+- Multi-sig-like approval flows
+- Conditional rules based on transaction parameters (value, destination, program)
+- Tiered authorization for different operation types
+- Configurable approval requirements per wallet or per action
+
+Programmable authorization would layer on top of the existing intent model, not replace it.
+
+---
+
+## Multi-Wallet and Multi-Chain Expansion
+
+GripLock is exploring the ability to manage multiple wallets and support additional chains.
+
+This includes:
+- Multiple wallets derived from the same MASTER_SECRET root
+- Cross-chain support for additional networks
+- Unified recovery across wallets and chains using the same 2-of-3 Shamir threshold
+- Consistent security model regardless of chain
+
+Multi-wallet and multi-chain support would not alter the core security model or custody boundaries.
+
+---
+
+## Autonomous Workflow Infrastructure
+
+Scheduled and recurring operations within policy bounds are under exploration.
+
+This includes:
+- Recurring transactions within pre-defined limits
+- Scheduled operations that execute without real-time user presence
+- Policy-gated automation that respects custody boundaries
+- Explicit user opt-in and configuration before any automated execution
+
+Autonomous workflows would never bypass custody boundaries or operate outside of user-defined policy.
+
+---
+
+## Custody Boundary Preservation
+
+As capabilities expand, preserving custody boundaries remains a non-negotiable focus.
+
+This includes:
+- Ensuring agents execute but never custody
+- Maintaining user control over all policy definitions
+- Preventing any external system from holding keys, shares, or MASTER_SECRET
+- Validating that new capabilities do not erode the core security model
+
+Every expansion of capability must be evaluated against custody boundary preservation before adoption.
 
 ---
 
 ## Refining the Core Experience
 
-Griplock’s primary focus remains on strengthening its core interaction model.
+GripLock's ongoing focus includes strengthening its core interaction model.
 
 This includes:
 - Improving session reliability and performance
 - Hardening NFC-based physical intent flows
+- Optimizing session key caching
 - Reducing friction without compromising security boundaries
 
-Any improvements must remain aligned with Griplock’s design principles.
-
----
-
-## Privacy Model Hardening
-
-Ongoing work focuses on refining how privacy is enforced at the interaction level.
-
-Areas of attention include:
-- Edge-case handling for shielded balances
-- Clearer separation between receipt and interaction
-- Improved session-bound privacy guarantees
-
-The goal is consistency and predictability, not expanded surface area.
-
----
-
-## Mobile Experience and Usability
-
-Griplock prioritizes a stable and intentional mobile experience.
-
-Focus areas include:
-- Session clarity and feedback
-- Error handling and recovery flows
-- Clear signaling of session state and intent boundaries
-
-Usability improvements will not introduce background access or automation.
+Any improvements must remain aligned with GripLock's design principles.
 
 ---
 
@@ -49,24 +122,12 @@ Usability improvements will not introduce background access or automation.
 Security work is continuous and iterative.
 
 This includes:
-- Internal review of session boundaries
-- Validation of key lifecycle behavior
-- Testing failure and interruption scenarios
+- Internal review of session boundaries and Shamir share handling
+- Validation of key lifecycle behavior and MASTER_SECRET reconstruction
+- Testing failure, interruption, and factor-loss scenarios
+- Review of AEAD encryption and KDF parameter choices
 
 Security improvements are treated as ongoing work, not one-time milestones.
-
----
-
-## Exploratory Research
-
-Some areas may be explored without commitment to production deployment.
-
-These may include:
-- Alternative intent confirmation mechanisms
-- Additional privacy-preserving interaction patterns
-- Controlled experimentation with non-core capabilities
-
-Exploration does not imply roadmap inclusion.
 
 ---
 
@@ -77,10 +138,16 @@ This page is not:
 - A delivery schedule
 - A promise of future functionality
 
-Griplock will only ship functionality that aligns with its core principles and security assumptions.
+GripLock will only ship functionality that aligns with its core principles and security assumptions.
 
 ---
 
-> **Note**  
-> Griplock prioritizes correctness and control over speed or feature breadth.  
+> **Note**
+> GripLock prioritizes correctness and control over speed or feature breadth.
 > Focus areas describe direction, not obligation.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

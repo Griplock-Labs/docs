@@ -1,6 +1,6 @@
-Unshielding in Griplock is the act of temporarily enabling interaction with shielded funds through explicit user intent.
+Unshielding in GripLock is the act of temporarily enabling interaction with shielded funds through explicit user intent.
 
-Unshielding does not change ownership, fund location, or on-chain state.  
+Unshielding does not change ownership, fund location, or on-chain state.
 It only enables **session-bound usability**.
 
 ---
@@ -27,21 +27,41 @@ Unshielding is not:
 - A change in custody
 - A change in on-chain visibility
 
-Funds do not become permanently unlocked.  
+Funds do not become permanently unlocked.
 They remain shielded by default outside of an active session.
 
 ---
 
-## How Unshielding Occurs
+## How Unshielding Occurs in V2
 
-Unshielding can occur only when the user:
-- Is physically present
-- Creates an active wallet session via NFC
-- Confirms the intended interaction locally
+Unshielding follows the V2 unlock flow:
 
-Without all of these conditions, unshielding cannot happen.
+1. **NFC Tap** — The user initiates physical intent by tapping their NFC device. NFC serves as an intent gate only; it does not perform any cryptographic operation.
 
+2. **Authentication** — The user authenticates using a supported factor: Passkey or PIN. This verifies the user's identity and authorizes session creation.
+
+3. **MASTER_SECRET Reconstruction** — The system reconstructs the MASTER_SECRET using 2-of-3 Shamir threshold shares. If a valid session cache exists, the cached session key may be used instead, avoiding full share reconstruction for performance.
+
+4. **Signing Capability** — With the MASTER_SECRET available, the wallet keypair is derived and signing capability is temporarily enabled.
+
+5. **Session End** — When the session ends, the MASTER_SECRET is cleared from memory. Signing capability is removed. Balances return to a shielded state.
+
+Without NFC intent and successful authentication, unshielding cannot occur.
 There is no background or delayed unshielding process.
+
+---
+
+## Session Cache and Performance
+
+GripLock V2 supports session key caching to reduce reconstruction overhead.
+
+When a session cache is valid:
+- The MASTER_SECRET does not need to be fully reconstructed from Shamir shares
+- The cached session key enables faster session resumption
+- All security boundaries remain enforced
+
+Session caching does not bypass authentication.
+It reduces latency, not security.
 
 ---
 
@@ -53,6 +73,7 @@ When a wallet session is active:
 - Interactions are allowed only within that session
 
 Once the session ends:
+- The MASTER_SECRET is cleared
 - Signing capability is removed
 - Balances automatically return to a shielded state
 - No residual access remains
@@ -63,27 +84,34 @@ Unshielding is reversible by default through session termination.
 
 ## Explicit Control Model
 
-Unshielding places control directly in the user’s hands.
+Unshielding places control directly in the user's hands.
 
-There is no silent unlock.  
-There is no delegated access.  
+There is no silent unlock.
+There is no delegated access.
 There is no automated usage.
 
-Every interaction requires conscious user action at the time it occurs.
+Every interaction requires conscious user action at the time it occurs: NFC tap, authentication, and session-bound confirmation.
 
 ---
 
 ## Security and Privacy Implications
 
-By enforcing unshielding through explicit intent, Griplock:
+By enforcing unshielding through explicit intent, GripLock:
 - Prevents unintended fund usage
 - Reduces exposure to remote exploitation
 - Eliminates background interaction risk
+- Ensures the MASTER_SECRET exists in memory only when needed
 
 Privacy is preserved by ensuring that usability exists only when the user is present and engaged.
 
 ---
 
-> **Summary**  
-> In Griplock, unshielding is not a mode you turn on.  
-> It is a temporary state created by explicit user intent — and removed automatically when that intent ends.
+> **Summary**
+> In GripLock, unshielding is not a mode you turn on.
+> It is a temporary state created by NFC tap, authentication, and MASTER_SECRET reconstruction — and removed automatically when the session ends.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

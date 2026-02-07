@@ -1,26 +1,86 @@
 This page describes functionality that exists in **experimental, exploratory, or non-production** form.
 
-Features listed here may change, be removed, or never reach production.  
+Features listed here may change, be removed, or never reach production.
 They should not be relied upon for long-term usage or guarantees.
 
 ---
 
-## Experimental Capabilities
+## Execution Policy Layer
 
-The following areas are currently under experimentation or active exploration:
+Per-wallet policy definitions are under exploration.
 
-- **Extended on-chain interactions**  
-  Additional on-chain interactions beyond basic wallet usage may be supported in controlled environments or limited releases.
+This includes:
+- Maximum transaction value limits
+- Allowed program and contract restrictions
+- Time-window-based access controls
+- Policy-scoped transaction authorization
 
-- **Swap functionality**  
-  Asset swaps may be available as an experimental capability.  
-  Swaps are treated as a convenience feature and not as a core product focus.
+Execution policies would define boundaries for what a wallet session can do, independent of the user's signing capability.
 
-- **Advanced privacy mechanisms**  
-  Certain privacy-related techniques or flows may be tested to improve interaction control and exposure reduction.
+---
 
-- **Alternative authentication flows**  
-  Additional intent or confirmation mechanisms may be explored to complement NFC-based physical intent.
+## Agent-Initiated Transactions
+
+Support for agent-initiated transactions within policy bounds is being explored.
+
+This includes:
+- Agents executing transactions on behalf of the user
+- Execution constrained by wallet-level policies
+- Agents operating without custody of keys or MASTER_SECRET
+- User-defined boundaries for agent behavior
+
+Agents would execute but never custody. The user retains full control over policy definitions and can revoke agent access at any time.
+
+---
+
+## Multi-Chain Expansion
+
+Expansion beyond the current chain is under consideration.
+
+This includes:
+- Multiple wallets derived from the same MASTER_SECRET root
+- Cross-chain support for additional networks
+- Unified recovery across chains using the same 2-of-3 Shamir threshold
+
+Multi-chain support would not alter the core security model or recovery architecture.
+
+---
+
+## Programmable Authorization
+
+Conditional authorization rules are being explored as an extension to the session model.
+
+This includes:
+- Multi-sig-like approval flows
+- Conditional rules based on transaction parameters
+- Tiered authorization for different operation types
+- Configurable approval requirements per wallet or per action
+
+Programmable authorization would layer on top of the existing intent model, not replace it.
+
+---
+
+## Autonomous Workflow Infrastructure
+
+Scheduled and recurring operations within policy bounds are under exploration.
+
+This includes:
+- Recurring transactions within pre-defined limits
+- Scheduled operations that execute without real-time user presence
+- Policy-gated automation that respects custody boundaries
+
+Autonomous workflows would require explicit user opt-in and policy configuration before any automated execution occurs.
+
+---
+
+## Extended On-Chain Interactions
+
+Additional on-chain interactions beyond basic wallet usage may be supported in controlled environments or limited releases.
+
+This includes:
+- DeFi interactions
+- Program-specific transaction support
+- Advanced token operations
 
 ---
 
@@ -43,20 +103,28 @@ Experimental functionality:
 - Should not be relied upon for asset security
 - Does not imply future availability or roadmap commitment
 
-Griplock makes no guarantees regarding the continuation, removal, or final form of experimental features.
+GripLock makes no guarantees regarding the continuation, removal, or final form of experimental features.
 
 ---
 
 ## Relationship to Core Principles
 
-Any experimental feature that conflicts with Griplock’s core design principles:
+Any experimental feature that conflicts with GripLock's core design principles:
 - Will not graduate to production
 - Will be revised or removed
+
+Custody boundaries are non-negotiable. No experimental feature will grant custody of keys or MASTER_SECRET to any external system, agent, or service.
 
 Experiments exist to test boundaries, not to redefine the system.
 
 ---
 
-> **Note**  
-> Experimental features are intentionally separated from live functionality.  
-> Their presence does not change Griplock’s core role as a privacy and control layer.
+> **Note**
+> Experimental features are intentionally separated from live functionality.
+> Their presence does not change GripLock's core role as a privacy and control layer.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

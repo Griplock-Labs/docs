@@ -1,25 +1,94 @@
-This page describes the functionality that is **currently implemented and available** in Griplock.
+This page describes the functionality that is **currently implemented and available** in GripLock V2.
 
-Only features listed here should be considered production-ready.  
+Only features listed here should be considered production-ready.
 Anything not listed here is either experimental or not part of the current system.
 
 ---
 
-## Core System Capabilities
+## Wallet Generation
 
-The following capabilities are live and operational as part of the Griplock system:
+GripLock V2 generates wallets from a secure random 32-byte MASTER_SECRET.
 
-- **NFC-based physical intent enforcement**  
-  Wallet sessions can only be created through explicit physical interaction and local user confirmation.
+- **Random-root wallet generation** — The MASTER_SECRET is generated from a cryptographically secure random source, not derived deterministically from user inputs.
+- **No seed phrase** — There is no mnemonic or seed phrase. The MASTER_SECRET is the root of the wallet and is never exposed to the user in plaintext.
 
-- **Session-based wallet access**  
-  Wallet access exists only within an active, user-initiated session and is removed immediately when the session ends.
+---
 
-- **Local key derivation**  
-  Cryptographic keys are derived locally during active sessions and are never stored persistently or transmitted to servers.
+## Recovery Model
 
-- **Ephemeral wallet sessions**  
-  Wallet sessions are temporary by design and leave no residual access after termination.
+GripLock V2 uses a **2-of-3 Shamir threshold** recovery model.
+
+Three shares of the MASTER_SECRET are distributed across independent storage factors:
+- **Google Drive** — Encrypted share stored in the user's cloud storage
+- **Device** — Encrypted share stored locally on the user's device
+- **Passkey** — Encrypted share bound to a WebAuthn passkey credential
+
+Any 2 of 3 shares are sufficient to reconstruct the MASTER_SECRET.
+No single factor alone grants access.
+
+---
+
+## Cryptographic Primitives
+
+The following cryptographic primitives are live in V2:
+
+- **Key derivation** — Argon2id and scrypt are used to derive encryption keys from user-provided factors (PIN, secrets)
+- **Authenticated encryption** — AEAD using XChaCha20-Poly1305 protects all encrypted shares and session data
+- **No plaintext storage** — The MASTER_SECRET and all derived keys are encrypted at rest and cleared from memory after session termination
+
+---
+
+## NFC Intent Gating
+
+NFC is used exclusively as a **physical intent gate**.
+
+- NFC tap initiates the session creation flow
+- NFC does not perform any cryptographic operation
+- NFC does not store or transmit keys, shares, or secrets
+- NFC enforces physical presence as a prerequisite for wallet access
+
+---
+
+## Session-Based Wallet Access
+
+Wallet access exists only within an active, user-initiated session.
+
+- Sessions are created through NFC tap followed by factor authentication (Passkey or PIN)
+- The MASTER_SECRET is reconstructed from 2-of-3 Shamir shares during session creation
+- Signing capability exists only while the session is active
+- Sessions are terminated explicitly or by timeout, clearing all key material from memory
+
+---
+
+## Session Key Caching
+
+GripLock V2 supports session key caching for performance.
+
+- A valid session cache allows faster session resumption without full Shamir reconstruction
+- Caching does not bypass authentication requirements
+- Cached keys are encrypted and time-bounded
+- Cache invalidation occurs on session termination or timeout
+
+---
+
+## Factor Rotation
+
+Users can rotate authentication factors without changing their wallet address.
+
+- PIN, secret, or NFC device can be changed independently
+- Factor rotation re-encrypts the affected Shamir shares under new credentials
+- The underlying MASTER_SECRET and wallet address remain unchanged
+- No on-chain migration or fund movement is required
+
+---
+
+## Passkey Support
+
+GripLock V2 supports WebAuthn passkeys as an authentication and recovery factor.
+
+- Passkeys serve as one of the three Shamir share storage factors
+- Passkey authentication is used during session creation
+- Passkeys provide phishing-resistant, device-bound authentication
 
 ---
 
@@ -27,53 +96,43 @@ The following capabilities are live and operational as part of the Griplock syst
 
 The following privacy behaviors are currently enforced:
 
-- **Private Receive**  
-  Funds can be received without activating a wallet session or exposing interaction capability.
-
-- **Shielded balances by default**  
-  Received funds remain non-interactable until the user explicitly creates a wallet session.
-
-- **Unshielding by explicit intent**  
-  Interaction with funds requires physical presence and session-bound confirmation.
-
----
-
-## Interaction Capabilities
-
-During an active wallet session, users can:
-
-- View balances
-- Sign transactions
-- Initiate supported on-chain interactions
-
-All interaction capability is strictly bound to the active session.
+- **Private Receive** — Funds can be received without activating a wallet session or reconstructing the MASTER_SECRET
+- **Shielded balances by default** — Received funds remain non-interactable until the user explicitly creates a wallet session
+- **Unshielding by explicit intent** — Interaction with funds requires NFC tap, authentication, and session-bound confirmation
 
 ---
 
 ## Supported On-Chain Actions
 
-Griplock supports basic wallet-level on-chain actions, including:
+During an active wallet session, users can:
 
-- Native transfers
-- Supported token transfers
-- Basic on-chain interactions required for standard wallet usage
+- View balances
+- Sign transactions
+- Initiate supported on-chain interactions (native transfers, supported token transfers)
 
-These actions do not execute without an active wallet session.
+All interaction capability is strictly bound to the active session.
+No actions execute without an active wallet session.
 
 ---
 
-## What “Live” Means
+## What "Live" Means
 
 A feature is considered live if it:
 - Is implemented in the production codebase
 - Has a defined interaction flow
 - Does not rely on experimental assumptions
-- Adheres fully to Griplock’s design principles
+- Adheres fully to GripLock's design principles
 
 Anything outside this scope is not considered live.
 
 ---
 
-> **Note**  
-> The list above reflects the current state of the system and may evolve over time.  
+> **Note**
+> The list above reflects the current state of GripLock V2 and may evolve over time.
 > No guarantees are made about feature permanence or future availability.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

@@ -1,36 +1,83 @@
-Griplock manages wallet access through explicitly bounded **wallet sessions**.
+GripLock manages wallet access through explicitly bounded **wallet sessions**.
 
-A session defines when a wallet can exist, interact, and sign transactions.  
-Outside of an active session, no wallet access is possible.
+In V2, sessions are optimized to avoid repeated share reconstruction while maintaining strict security boundaries. A session defines when a wallet can exist, interact, and sign transactions. Outside of an active session, no wallet access is possible.
 
-This page describes how sessions are created, maintained, and terminated.
+This page describes how sessions are created, authenticated, cached, and terminated.
 
 ---
 
-## Session Creation Conditions
+## Session Creation Policy
 
-A wallet session can be created only when all required conditions are met.
+A wallet session requires satisfaction of the **minimum unlock policy** before any signing capability is granted.
 
-These conditions include:
-- Physical presence of the user
-- NFC interaction
-- Local user confirmation
+The minimum policy is:
 
-If any condition is missing or fails validation, the session is not created.
+**NFC tap** + (**Passkey** OR **PIN/Secret**)
 
-There is no background or automatic session creation.
+Both factors must be verified:
+1. **Physical intent** — confirmed by NFC card tap (UID verified against stored uidHash)
+2. **Identity confirmation** — satisfied by either a Passkey ceremony or PIN/Secret entry
+
+If any factor is missing or fails validation, the session is not created. There is no background or automatic session creation.
+
+---
+
+## Unlock and Sign Flow
+
+When a session is initiated:
+
+1. User taps NFC card → intent gate opens
+2. User authenticates via Passkey or PIN/Secret
+3. System checks for a valid **session cache** in SecureStore
+4. If cache exists and is not expired → decrypt MASTER_SECRET from cache
+5. If no cache → reconstruct MASTER_SECRET from any 2 of 3 Shamir shares
+6. Derive transaction-specific signing keys from MASTER_SECRET
+7. Sign the requested transaction
+8. Session remains active until termination conditions are met
+
+Share reconstruction (step 5) is the expensive path. Session caching (step 4) is the optimized path for repeat transactions within the same session window.
+
+---
+
+## Session Key Caching
+
+After successful authentication and MASTER_SECRET access, GripLock derives a **sessionKey** and caches it in the device's SecureStore.
+
+```
+sessionKey = HKDF(MASTER_SECRET, "griplock.session", sessionNonce) → 32 bytes
+```
+
+The session cache:
+- Is encrypted with K_dev (Secure Enclave / Android Keystore)
+- Has a short time-to-live (configurable, default measured in minutes)
+- Is stored in the platform's SecureStore (iOS Keychain / Android EncryptedSharedPreferences)
+- Is invalidated on session termination, app closure, or timeout
+
+This avoids reconstructing MASTER_SECRET from Shamir shares on every transaction. The sessionKey provides equivalent signing capability for the duration of the cache window.
+
+---
+
+## Why Cache Instead of Reconstruct
+
+Share reconstruction requires:
+- Decrypting at least 2 of 3 shares (from Drive, Device, or Passkey)
+- Running Shamir interpolation
+- Re-deriving K_user via Argon2id (memory-hard, ~64 MiB)
+
+This is computationally expensive and introduces latency on every transaction. Session caching amortizes this cost across multiple operations within a single authenticated window.
+
+The tradeoff is controlled: the cache is short-lived, hardware-bound, and destroyed on session end.
 
 ---
 
 ## Active Session State
 
 While a session is active:
-- Signing capability is enabled
-- Shielded balances may become usable
-- On-chain interactions may be initiated
+- Signing capability is enabled via the cached sessionKey
+- Transaction construction and on-chain interactions are permitted
+- All actions are scoped to the current session
 
-All actions are strictly scoped to the active session.  
-There is no persistence beyond it.
+There is no persistence beyond the session boundary. There is no delegated or background signing.
 
 ---
 
@@ -39,11 +86,9 @@ There is no persistence beyond it.
 Each wallet session is:
 - Isolated from previous sessions
 - Independent of future sessions
-- Bound to a single intent window
+- Bound to a single authentication window
 
-Session data is not shared or reused across sessions.
-
-Once a session ends, it cannot be resumed.
+Session data, keys, and cache entries are not shared or reused across sessions. Once a session ends, it cannot be resumed — a new authentication cycle is required.
 
 ---
 
@@ -51,49 +96,46 @@ Once a session ends, it cannot be resumed.
 
 A session terminates under any of the following conditions:
 - The user explicitly exits the session
-- The application is closed
-- A predefined inactivity timeout is reached
-- Local security constraints are violated
+- The application is closed or backgrounded
+- The session cache TTL expires
+- Local security constraints are violated (e.g., device lock state change)
 
 Session termination is immediate and irreversible.
 
 ---
 
-## Post-Termination Behavior
+## Post-Termination Cleanup
 
 When a session ends:
-- Derived keys are destroyed
+- The sessionKey is wiped from SecureStore
+- MASTER_SECRET is removed from volatile memory
+- All derived signing keys are destroyed
 - Encryption keys are discarded
-- Signing capability is removed
 - Balances return to a shielded, non-interactable state
 
-No residual access remains after termination.
+No residual access remains after termination. The wallet becomes inaccessible until a new session is explicitly created.
 
 ---
 
 ## No Background Sessions
 
-Griplock does not support:
+GripLock does not support:
 - Background wallet sessions
-- Silent reactivation
-- Deferred signing
+- Silent reactivation or session refresh
+- Deferred or queued signing
 - Delegated session control
 
-Every session requires fresh, explicit user intent.
+Every session requires fresh physical intent (NFC tap) and identity confirmation. There are no shortcuts.
 
 ---
 
-## Security Implications
-
-By enforcing strict session boundaries, Griplock:
-- Limits the impact of device compromise
-- Prevents long-lived access
-- Eliminates unattended wallet usage
-
-Session existence is treated as a **privilege**, not a default state.
+> **Summary**
+> In GripLock V2, wallet access requires NFC intent plus Passkey or PIN/Secret.
+> After authentication, a short-lived sessionKey is cached to avoid repeated share reconstruction.
+> When a session ends, all keys and cache entries are destroyed. No background access exists.
 
 ---
 
-> **Summary**  
-> In Griplock, wallet access is session-based, temporary, and explicit.  
-> When a session ends, access ends with it.
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

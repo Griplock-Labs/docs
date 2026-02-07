@@ -1,52 +1,86 @@
-Griplock wallets do not exist permanently.
+GripLock wallets do not exist permanently.
 
-Instead of maintaining a persistent wallet state, Griplock creates **temporary wallet sessions** that exist only for the duration of explicit user intent.
+Instead of maintaining a persistent wallet state, GripLock creates **temporary wallet sessions** that exist only for the duration of explicit user intent.
 
-This page describes how a wallet session is created, used, and terminated.
+Wallet root material is generated once during provisioning, split into recoverable shares, and reconstructed only within an active session.
+
+This page describes how a wallet is provisioned, how sessions are created and used, and how they are terminated.
 
 ---
 
-## 1. Session Creation
+## 1. Wallet Provisioning
+
+Wallet provisioning occurs once, when a user sets up GripLock for the first time.
+
+**Step 1 — Collect Auth Setup**
+- NFC tap → read UID for pairing metadata
+- PIN and/or Secret (per auth level)
+- Register Passkey (FaceID/TouchID)
+
+**Step 2 — Generate Root**
+- `MASTER_SECRET = SecureRandom(32 bytes)`
+- The root is generated from a cryptographically secure random source
+- No user input (PIN, NFC UID, Secret) contributes to root entropy
+
+**Step 3 — Split Into Shares**
+- `(A, B, C) = ShamirSplit(MASTER_SECRET, k=2, n=3)`
+- Any 2 of the 3 shares can reconstruct the original `MASTER_SECRET`
+- No single share reveals any information about the root
+
+**Step 4 — Encrypt and Store**
+- Share A → encrypted with `K_user` → stored on Google Drive
+- Share B → encrypted with `K_dev` → stored in Device SecureStore
+- Share C → wrapped via Passkey → stored alongside Drive backup
+
+GripLock does not retain `MASTER_SECRET` after provisioning. It exists only during active sessions.
+
+---
+
+## 2. Session Creation
 
 A wallet session begins only when the user explicitly initiates access.
 
-To create a session, the user must:
-- Be physically present
-- Tap an NFC card
-- Confirm access locally on their device
+The minimum auth policy requires:
+- **NFC tap** — physical intent gate (confirms presence)
+- **Passkey OR PIN/Secret** — identity confirmation (based on configured auth level)
 
-Only after these conditions are met does the system derive the necessary cryptographic material locally.
+Once the auth policy is satisfied, the system either:
+- Decrypts `MASTER_SECRET` from a short-lived session cache, or
+- Reconstructs `MASTER_SECRET` from any 2 of the 3 Shamir shares
 
-If any step is missing, the session is not created.
-
----
-
-## 2. Local Key Derivation
-
-Once a session is authorized, cryptographic keys are derived **locally** on the user’s device.
-
-Key derivation:
-- Happens only during an active session
-- Does not rely on persistent storage
-- Does not transmit private keys to Griplock servers
-
-Derived keys exist only in memory and only for the duration of the session.
+If any required step is missing, the session is not created.
 
 ---
 
-## 3. Active Session State
+## 3. Session Key Caching
+
+Reconstructing `MASTER_SECRET` from shares on every transaction is expensive.
+
+After a successful auth and reconstruction, GripLock derives a **session key** and caches it in Device SecureStore with a short time-to-live.
+
+This allows subsequent operations within the same session to proceed without repeated share reconstruction.
+
+The cached session key:
+- Is short-lived and expires automatically
+- Is bound to the current session context
+- Is cleared on session termination
+- Never leaves the device
+
+---
+
+## 4. Active Session State
 
 While a wallet session is active:
 - Balances may become accessible
 - Transactions may be constructed and signed
 - On-chain interactions may be initiated
 
-All actions are bound to the active session.  
+All actions are bound to the active session.
 There is no background signer and no autonomous execution.
 
 ---
 
-## 4. Session Termination
+## 5. Session Termination
 
 A wallet session ends when:
 - The user explicitly exits the session
@@ -55,36 +89,56 @@ A wallet session ends when:
 - Local security conditions are violated
 
 When a session terminates:
-- Derived keys are discarded from memory
+- The cached session key is discarded from SecureStore
+- `MASTER_SECRET` is cleared from memory
 - Signing capability is removed
 - The wallet becomes inaccessible again
 
 ---
 
-## 5. Post-Session State
+## 6. Post-Session State
 
 After termination:
 - No wallet session exists
-- No keys remain in memory
+- No keys remain in memory or cache
 - No balances are accessible
 - No transactions can be signed
 
-To regain access, the user must re-initiate the full session creation process.
+To regain access, the user must re-initiate the full session creation process — NFC tap, auth policy, and share reconstruction.
+
+---
+
+## Recovery
+
+If a device is lost or a share becomes unavailable, the user can recover using the **2-of-3 Shamir threshold**.
+
+Any two of the three shares (Drive backup, Device SecureStore, Passkey-wrapped backup) are sufficient to reconstruct `MASTER_SECRET` and re-provision on a new device.
+
+GripLock does not custody any shares. Recovery is entirely user-controlled.
 
 ---
 
 ## Security Implications
 
-By limiting wallet existence to explicit sessions, Griplock reduces exposure to:
+By limiting wallet existence to explicit sessions, GripLock reduces exposure to:
 - Remote exploitation
 - Background signing
 - Long-lived key compromise
 - Passive wallet interaction
 
+The combination of secure random root generation, Shamir share distribution, and session-bound access ensures that no single point of failure can expose wallet material.
+
 Security is enforced through **absence**, not persistence.
 
 ---
 
-> **Summary**  
-> A Griplock wallet session is created intentionally, exists temporarily, and is destroyed completely.  
+> **Summary**
+> A GripLock wallet is provisioned once from secure randomness, split into recoverable shares, and reconstructed only within intentional sessions.
 > Wallet access is an event — not a constant state.
+> GripLock does not custody keys, shares, or root material at any point.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

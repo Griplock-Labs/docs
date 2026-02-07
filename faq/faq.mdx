@@ -1,38 +1,119 @@
-This page answers common questions about Griplock’s design, behavior, and scope.
+This page answers common questions about GripLock's design, behavior, and scope.
 
 ---
 
-## Is Griplock a wallet?
+## Is GripLock a wallet?
 
-Griplock is not a traditional always-on wallet.
+GripLock is not a traditional always-on wallet.
 
-It is a **privacy and control layer** that creates temporary wallet sessions only when the user explicitly initiates access through physical intent.
+It is a **privacy and control layer** that creates temporary wallet sessions only when the user explicitly initiates access through physical intent and factor authentication.
 
 ---
 
-## Does Griplock custody funds or keys?
+## Does GripLock custody funds or keys?
 
 No.
 
-Griplock does not custody funds, private keys, or recovery data.  
+GripLock does not custody funds, private keys, MASTER_SECRET, Shamir shares, or recovery data.
 All assets remain fully owned and controlled by the user on-chain.
 
 ---
 
-## Is Griplock a card issuer or payment service?
+## Is there a seed phrase?
 
 No.
 
-Griplock does not issue cards, provide card programs, or operate as a payment processor.  
-NFC is used solely as a mechanism for local authentication and physical intent enforcement.
+GripLock V2 does not use a mnemonic seed phrase. The wallet is derived from a secure random 32-byte MASTER_SECRET, which is protected by a 2-of-3 Shamir threshold split across independent storage factors.
+
+There is nothing to write down, memorize, or export.
 
 ---
 
-## Is Griplock a mixer or privacy obfuscation tool?
+## How does recovery work?
+
+GripLock uses a **2-of-3 Shamir threshold** recovery model.
+
+The MASTER_SECRET is split into three shares, stored across:
+- **Google Drive** — Encrypted share in the user's cloud storage
+- **Device** — Encrypted share on the user's local device
+- **Passkey** — Encrypted share bound to a WebAuthn passkey credential
+
+Any 2 of 3 shares are sufficient to reconstruct the MASTER_SECRET and restore wallet access.
+No single factor alone grants access. GripLock does not hold any shares.
+
+---
+
+## What happens if I lose one factor?
+
+If one factor is lost (e.g., device is replaced), the remaining two factors are sufficient to reconstruct the MASTER_SECRET and restore access.
+
+After recovery, the lost factor's share can be re-provisioned to a new device, passkey, or cloud account.
+
+---
+
+## What happens if I lose two or more factors?
+
+If 2 or more factors are lost simultaneously, the MASTER_SECRET cannot be reconstructed.
+
+Funds remain on-chain but may be inaccessible through GripLock.
+There is no custodial recovery, master override, or support-assisted restoration.
+
+This is why maintaining at least two independent factors is critical.
+
+---
+
+## What does NFC do?
+
+NFC is used exclusively as a **physical intent gate**.
+
+NFC tap initiates the session creation flow. It signals that the user is physically present and intends to interact with their wallet.
+
+NFC does not:
+- Perform any cryptographic operation
+- Store or transmit keys, shares, or secrets
+- Derive or reconstruct the MASTER_SECRET
+
+NFC enforces physical presence. Authentication and key reconstruction happen separately through factor verification.
+
+---
+
+## Can I change my PIN or NFC device without losing my wallet?
+
+Yes.
+
+GripLock V2 supports **factor rotation**. You can change your PIN, secret, NFC device, or passkey without changing your wallet address.
+
+Factor rotation re-encrypts the affected Shamir shares under new credentials. The underlying MASTER_SECRET and wallet address remain unchanged. No on-chain migration or fund movement is required.
+
+---
+
+## What is session key caching?
+
+Session key caching allows GripLock to resume sessions faster without performing full Shamir share reconstruction each time.
+
+When a valid session cache exists:
+- The MASTER_SECRET does not need to be fully reconstructed from shares
+- Session resumption is faster
+- All authentication requirements are still enforced
+
+Caching reduces latency, not security. Cached keys are encrypted and time-bounded. Cache invalidation occurs on session termination or timeout.
+
+---
+
+## Is GripLock a card issuer or payment service?
 
 No.
 
-Griplock does not pool, reroute, or obfuscate transactions.  
+GripLock does not issue cards, provide card programs, or operate as a payment processor.
+NFC is used solely as a mechanism for physical intent enforcement.
+
+---
+
+## Is GripLock a mixer or privacy obfuscation tool?
+
+No.
+
+GripLock does not pool, reroute, or obfuscate transactions.
 It does not hide balances or alter blockchain transparency.
 
 Privacy is enforced by controlling **when and how interaction is possible**, not by modifying on-chain data.
@@ -43,26 +124,17 @@ Privacy is enforced by controlling **when and how interaction is possible**, not
 
 No.
 
-Funds always remain on-chain and verifiable.  
-Griplock does not remove, disguise, or mask blockchain data.
+Funds always remain on-chain and verifiable.
+GripLock does not remove, disguise, or mask blockchain data.
 
 ---
 
-## Does Griplock provide anonymity?
+## Does GripLock provide anonymity?
 
 No.
 
-Griplock reduces interaction exposure.  
+GripLock reduces interaction exposure.
 It does not provide anonymity or unlinkability guarantees.
-
----
-
-## Can Griplock recover my wallet if I lose access?
-
-No.
-
-Griplock cannot recover wallets, reset access, or bypass security controls.  
-If required access factors are lost, funds remain on-chain but may be inaccessible through Griplock.
 
 ---
 
@@ -73,7 +145,7 @@ If a device is lost:
 - No signing capability exists
 - Funds remain unaffected on-chain
 
-Access can only be re-established by recreating a wallet session using the required access factors.
+The device share is one of three Shamir factors. If the remaining two factors (Google Drive and Passkey) are available, the MASTER_SECRET can be reconstructed and the device share re-provisioned to a new device.
 
 ---
 
@@ -81,12 +153,24 @@ Access can only be re-established by recreating a wallet session using the requi
 
 An NFC card alone does not grant access.
 
-Additional local confirmation is always required to create a wallet session.  
-Loss of an NFC card does not automatically compromise funds.
+NFC serves as a physical intent gate. Loss of an NFC card does not compromise funds because NFC does not store keys, shares, or secrets.
+
+A replacement NFC device can be configured without affecting the wallet or recovery factors.
 
 ---
 
-## Does Griplock support swaps?
+## Can GripLock recover my wallet if I lose access?
+
+No.
+
+GripLock cannot recover wallets, reset access, or bypass security controls.
+GripLock does not hold any shares or recovery data.
+
+Recovery is only possible if the user retains access to at least 2 of their 3 Shamir share factors.
+
+---
+
+## Does GripLock support swaps?
 
 Swaps may be supported as a **basic wallet capability**.
 
@@ -94,30 +178,31 @@ They are not a core product focus and are not treated as financial services or y
 
 ---
 
-## Can Griplock be automated or used with bots?
+## Can GripLock be automated or used with bots?
 
-No.
+Not currently.
 
-Griplock does not support background signing, automation, scheduled actions, or delegated execution.
+GripLock does not support background signing, automation, scheduled actions, or delegated execution today.
 
-All interactions require real-time user intent.
+A future agent execution layer is being explored that would allow agent-initiated transactions within user-defined policy bounds, while preserving custody boundaries. This capability is experimental and not yet live.
 
 ---
 
-## Is Griplock production-ready?
+## Is GripLock production-ready?
 
-Only features listed under **What’s Live** should be considered production-ready.
+Only features listed under **What's Live** should be considered production-ready.
 
 Anything labeled experimental may change, be removed, or never reach production.
 
 ---
 
-## Why is Griplock designed this way?
+## Why is GripLock designed this way?
 
-Griplock prioritizes:
+GripLock prioritizes:
 - Explicit user intent
 - Reduced exposure
 - Absence of always-on access
+- Non-custodial architecture
 
 These design choices trade convenience for control and security.
 
@@ -126,7 +211,7 @@ These design choices trade convenience for control and security.
 ## Where can I learn more about how it works?
 
 Start with:
-- *What is Griplock*
+- *What is GripLock*
 - *How It Works*
 - *Privacy Model*
 - *Security*
@@ -135,6 +220,12 @@ These sections describe the system in detail.
 
 ---
 
-> **Summary**  
-> Griplock is designed to give users control over when their wallet exists and can be used.  
-> It reduces exposure by refusing to be always available.
+> **Summary**
+> GripLock is designed to give users control over when their wallet exists and can be used.
+> It reduces exposure by refusing to be always available — and never custodies anything.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

@@ -1,4 +1,4 @@
-Griplock uses NFC as a mechanism to enforce **physical intent**.
+GripLock uses NFC as a mechanism to enforce **physical intent**.
 
 Physical intent means that wallet access and interaction require deliberate, real-world user action — not just software execution or remote input.
 
@@ -14,30 +14,60 @@ If a private key exists in memory or storage, it can be:
 - Triggered remotely
 - Accessed by malware
 - Used by automated scripts
-- Exploited without the user’s awareness
+- Exploited without the user's awareness
 
-Griplock changes this model by requiring **physical presence** before a wallet session can exist.
+GripLock changes this model by requiring **physical presence** before a wallet session can exist.
 
 ---
 
-## NFC as an Intent Gate
+## NFC as a Pure Intent Gate
 
-In Griplock, NFC is not used for payments or card programs.
+In GripLock V2, the NFC card serves one purpose: **physical intent gating**.
 
-It is used as an **intent gate**.
+NFC is not used for payments, card programs, key derivation, or encryption.
 
 To activate a wallet session, a user must:
 - Be physically present
 - Tap an NFC card
-- Confirm access locally on their device
+- Satisfy the required auth policy (Passkey, PIN, or Secret)
 
 Without this physical action, the system refuses to create a wallet session.
+
+The NFC UID is read during the tap and used strictly for non-cryptographic purposes.
+
+---
+
+## What NFC UID Is Used For
+
+The NFC UID serves a narrow, well-defined role:
+
+- **Intent gating** — confirming the user has tapped a physical card
+- **Session confirmation** — validating that the correct card is present
+- **Pairing metadata** — associating a card with a device during provisioning
+- **Metadata hash storage** — anchoring non-secret metadata to the card identity
+
+These are all **policy-layer** functions. They confirm presence and intent. They do not touch cryptographic material.
+
+---
+
+## What NFC UID Is Never Used For
+
+The NFC UID is **never** used to:
+
+- Derive wallet keys or `K_user`
+- Encrypt or decrypt Shamir shares
+- Contribute entropy to `MASTER_SECRET`
+- Participate in any cryptographic operation
+
+Wallet root material is generated from a secure random source (`SecureRandom(32 bytes)`), entirely independent of the NFC UID.
+
+This separation ensures that physical card compromise does not expose cryptographic material.
 
 ---
 
 ## Why NFC (and Not Biometrics Alone)
 
-Biometrics and PINs prove identity.  
+Biometrics and PINs prove identity.
 They do not prove presence.
 
 NFC introduces a second dimension:
@@ -57,29 +87,37 @@ NFC ensures that access is intentional, observable, and interruptible by the use
 
 If there is no NFC interaction:
 - No wallet session is created
-- No keys are derived
+- No keys are reconstructed or cached
 - No balances become accessible
 - No transactions can be initiated
 
-Physical intent is not an added security layer.  
+Physical intent is not an added security layer.
 It is a **precondition** for wallet existence.
 
 ---
 
 ## Scope and Limitations
 
-NFC in Griplock does not:
-- Store private keys
+NFC in GripLock does not:
+- Store private keys or Shamir shares
 - Contain balances
 - Act as a payment instrument
+- Contribute to key derivation or encryption
 
 It is a local signal used solely to authorize the creation of a wallet session.
 
-Loss or replacement of an NFC card does not grant access on its own.  
-Additional local confirmation is always required.
+Loss or replacement of an NFC card does not grant access on its own.
+Additional auth policy satisfaction (Passkey, PIN, or Secret) is always required.
 
 ---
 
-> **Summary**  
-> NFC in Griplock is not about cards or payments.  
+> **Summary**
+> NFC in GripLock is not about cards or payments.
 > It is about enforcing human intent before a wallet can exist.
+> The NFC UID is never used for key derivation or encryption — it is a pure intent gate.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

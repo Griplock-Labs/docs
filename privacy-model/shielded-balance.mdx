@@ -1,31 +1,33 @@
 A shielded balance refers to funds that exist on-chain but are **not immediately usable**.
 
-Shielding in Griplock is a control state, not an obfuscation technique.  
+Shielding in GripLock is a control state, not an obfuscation technique.
 Funds are not hidden, altered, or removed from the blockchain.
 
 What changes is **interaction availability**, not ownership or visibility.
 
 ---
 
-## What “Shielded” Means
+## What "Shielded" Means
 
-In Griplock, a balance is considered shielded when:
+In GripLock V2, a balance is considered shielded when:
 - Funds are owned by the user on-chain
 - No active wallet session exists
+- The MASTER_SECRET has not been reconstructed
 - Signing capability is unavailable
 
-Shielded balances cannot be interacted with until the user explicitly creates a wallet session through physical intent.
+Shielded balances cannot be interacted with until the user explicitly creates a wallet session through physical intent and factor authentication.
 
 ---
 
 ## Shielded by Default
 
-Balances received through Griplock flows are shielded by default.
+Balances received through GripLock flows are shielded by default.
 
 This means:
 - Funds can be received at any time
 - Balances remain inactive during idle periods
 - No background wallet or signer exists
+- No MASTER_SECRET resides in memory
 
 Shielding prevents balances from being accidentally or remotely accessed when the user is not present.
 
@@ -40,7 +42,7 @@ It is not achieved by:
 - Blurring balances
 - Delaying display only
 
-Shielding is enforced at the system level by the absence of an active wallet session.
+Shielding is enforced at the system level by the absence of a reconstructed MASTER_SECRET and an active wallet session.
 
 If no session exists, the balance cannot be used — regardless of what the UI shows.
 
@@ -48,17 +50,19 @@ If no session exists, the balance cannot be used — regardless of what the UI s
 
 ## Session-Bound Availability
 
-When a wallet session is created:
+When a wallet session is created through NFC tap and authentication:
+- The MASTER_SECRET is reconstructed from 2-of-3 Shamir shares (or retrieved from a valid session cache)
+- Signing keys are derived
 - Shielded balances become temporarily usable
-- Signing capability is enabled
 - Interaction is permitted only within that session
 
 Once the session ends:
+- The MASTER_SECRET is cleared from memory
 - Signing capability is removed
 - Balances return to a shielded state
 - No residual access remains
 
-Shielding and unshielding are tied strictly to session state.
+Shielding and unshielding are tied strictly to MASTER_SECRET availability and session state.
 
 ---
 
@@ -68,6 +72,7 @@ Shielded balance does:
 - Reduce exposure during idle periods
 - Limit automated or background interaction
 - Enforce explicit user intent before usage
+- Keep the MASTER_SECRET unrecoverable outside of sessions
 
 Shielded balance does not:
 - Hide balances from the blockchain
@@ -75,22 +80,29 @@ Shielded balance does not:
 - Pool or reroute funds
 - Provide anonymity guarantees
 
-Griplock does not alter blockchain transparency.  
+GripLock does not alter blockchain transparency.
 It alters **when balances can be acted upon**.
 
 ---
 
 ## Security Implications
 
-By keeping balances shielded when no session exists, Griplock:
+By keeping balances shielded when no session exists, GripLock:
 - Reduces the attack surface of dormant wallets
 - Prevents background signing
 - Limits passive wallet probing
+- Ensures the MASTER_SECRET is never persistently available
 
 Security is achieved by making inactivity the safest state.
 
 ---
 
-> **Summary**  
-> A shielded balance is owned, verifiable, and on-chain — but unusable by default.  
-> Interaction is unlocked only through explicit, session-bound user intent.
+> **Summary**
+> A shielded balance is owned, verifiable, and on-chain — but unusable by default.
+> No MASTER_SECRET is reconstructed and no signing is possible until the user explicitly creates a session.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

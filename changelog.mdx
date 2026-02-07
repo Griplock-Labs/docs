@@ -1,0 +1,100 @@
+This page tracks architectural versions and major changes to the GripLock system.
+
+---
+
+## Current Version
+
+**Architecture: V2**
+**Status: Live**
+
+---
+
+## V2 — Current Architecture
+
+Released as the production architecture for GripLock.
+
+### Wallet Generation
+
+- MASTER_SECRET generated from `SecureRandom(32 bytes)`
+- Wallet address is no longer deterministically derived from user credentials
+- User credentials (PIN, Secret, NFC) serve as policy unlock gates only
+
+### Recovery Model
+
+- Shamir 2-of-3 threshold secret sharing replaces single-factor recovery
+- Three independent shares:
+  - **Share A** — Encrypted with K_user (Argon2id-derived), stored on Google Drive
+  - **Share B** — Encrypted with K_dev (Secure Enclave), stored on device
+  - **Share C** — Wrapped with Passkey, stored alongside Drive backup
+- Any 2 of 3 shares reconstruct the MASTER_SECRET
+- Factor rotation supported without changing wallet address
+
+### Cryptography
+
+- KDF upgraded to **Argon2id** (64 MiB, 3 iterations, parallelism 1) with scrypt fallback
+- All encryption uses **AEAD** (XChaCha20-Poly1305 preferred, AES-256-GCM acceptable)
+- SHA-256 restricted to non-secret use (fingerprints, metadata hashing only)
+- Schema version: 1 for all EncryptedBlob and KdfEnvelope structures
+
+### NFC Role
+
+- NFC UID is used exclusively as a **physical intent gate**
+- NFC UID is never used for key derivation or share encryption
+- Intent gating, session confirmation, and metadata hashing are the only permitted NFC functions
+
+### Session Management
+
+- Session key caching via HKDF-derived sessionKey in SecureStore
+- Short-lived cache avoids reconstructing MASTER_SECRET from shares on every transaction
+- Session terminates on timeout, app background, or explicit lock
+- All key material wiped from memory on session end
+
+### Authentication
+
+- Three auth level modes: PIN Only, Secret Only, Maximum (PIN + Secret)
+- Passkey (FaceID/TouchID) support as both auth factor and recovery share wrapper
+- NFC tap required as physical presence proof for all session creation
+
+---
+
+## V1 — Previous Architecture (Deprecated)
+
+V1 used a deterministic wallet derivation model. It has been fully replaced by V2.
+
+### Key Differences from V2
+
+| Aspect | V1 (Deprecated) | V2 (Current) |
+|--------|-----------------|--------------|
+| **Wallet Source** | Deterministic from PIN + NFC + Secret | SecureRandom(32 bytes) |
+| **KDF** | SHA-256 based | Argon2id (memory-hard) |
+| **Encryption** | Bare encryption | AEAD (authenticated) |
+| **Recovery** | Single-factor | Shamir 2-of-3 threshold |
+| **NFC Role** | Part of key derivation | Intent gate only |
+| **Factor Rotation** | Not possible (changes wallet) | Supported (wallet unchanged) |
+| **Passkey Support** | None | Recovery share + auth factor |
+
+### Why V1 Was Replaced
+
+- Deterministic derivation from user inputs created a fixed relationship between credentials and wallet address — changing any factor changed the wallet
+- SHA-256 as KDF did not provide memory-hard brute-force resistance
+- Single-factor recovery was fragile — losing one factor could mean permanent loss
+- NFC UID in key derivation path meant NFC card replacement required full wallet migration
+
+---
+
+## Versioning Policy
+
+GripLock uses architecture-level versioning (V1, V2, etc.) rather than semantic versioning.
+
+Each version represents a complete security architecture with its own:
+- Key derivation model
+- Encryption scheme
+- Recovery mechanism
+- Session management approach
+
+Minor updates within an architecture version (parameter tuning, implementation improvements) do not increment the version number.
+
+---
+
+> **Summary**
+> GripLock is currently on **Architecture V2**. V2 introduced random-root wallet generation, Shamir 2-of-3 threshold recovery, Argon2id KDF, AEAD encryption, and NFC as a pure intent gate. V1 is fully deprecated.

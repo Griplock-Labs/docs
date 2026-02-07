@@ -1,15 +1,15 @@
-Griplock introduces a shielded interaction model that separates **fund existence** from **fund usability**.
+GripLock introduces a shielded interaction model that separates **fund existence** from **fund usability**.
 
-Funds always remain on-chain.  
-What Griplock controls is **when and how** those funds become interactable.
+Funds always remain on-chain.
+What GripLock controls is **when and how** those funds become interactable — through session-bound access governed by physical intent and auth policy.
 
-This page describes how shielded interactions work from receiving funds to unshielding them through explicit user intent.
+This page describes how shielded interactions work from receiving funds to unlocking them through explicit user action.
 
 ---
 
 ## Shielded by Default
 
-When funds are received through a Griplock-enabled wallet flow, they are treated as **shielded** by default.
+When funds are received through a GripLock-enabled wallet flow, they are treated as **shielded** by default.
 
 Shielded means:
 - Funds exist on-chain
@@ -24,51 +24,55 @@ Balances are not immediately exposed for use until the user explicitly initiates
 
 Receiving funds does not require an active wallet session.
 
-Funds can be sent to a Griplock-derived address at any time.  
+Funds can be sent to a GripLock-derived address at any time.
 They remain on-chain and verifiable, but **inactive** from an interaction standpoint.
 
-No signing capability exists until the user creates a wallet session through physical intent.
+No signing capability exists until the user creates a wallet session through physical intent and auth policy satisfaction.
 
 ---
 
-## Interaction Requires an Active Session
+## The Unlock Flow
 
-To interact with shielded funds, the user must:
-- Create a wallet session via NFC and local confirmation
-- Explicitly unlock interaction capability
+To interact with shielded funds, the user must complete the full unlock sequence:
 
-Without an active session:
-- Funds cannot be moved
-- Transactions cannot be signed
-- On-chain actions cannot be initiated
+1. **NFC Tap** — physical intent gate confirms the user is present
+2. **Auth Policy** — Passkey OR PIN/Secret (based on configured auth level) confirms identity
+3. **Reconstruct or Cache** — `MASTER_SECRET` is either reconstructed from 2-of-3 Shamir shares or decrypted from the short-lived session cache
+4. **Sign** — the reconstructed key material is used to authorize on-chain actions
 
-Shielding is enforced by the system, not by UI state.
+Each step is mandatory. Skipping any step prevents interaction.
 
 ---
 
-## Unshielding by Intent
+## Session-Bound Signing
 
-Unshielding is not automatic.
+All signing operations are bound to the active wallet session.
 
-It occurs only when the user:
-- Is physically present
-- Creates an active wallet session
-- Confirms the intended interaction locally
+Once `MASTER_SECRET` is available in memory:
+- A session key is derived and cached in Device SecureStore
+- Subsequent signing operations use the cached session key
+- No share reconstruction is required for repeated operations within the same session
 
-Unshielding enables temporary access to balances for the purpose of a specific action.
+Signing is:
+- Time-limited to the session duration
+- Non-persistent beyond session termination
+- Impossible without prior NFC tap and auth policy satisfaction
 
-Once the session ends, funds return to a shielded, non-interactable state.
+There is no background signer. There is no queued or deferred signing.
 
 ---
 
-## Session-Bound Interaction
+## Automatic Re-Shielding on Session End
 
-All interactions with shielded funds are:
-- Bound to the active wallet session
-- Time-limited
-- Non-persistent
+When a wallet session terminates:
+- The cached session key is discarded
+- `MASTER_SECRET` is cleared from memory
+- Signing capability is immediately revoked
+- Funds return to a **shielded, non-interactable state**
 
-There is no background access and no lingering signing capability once the session ends.
+Re-shielding is automatic. The user does not need to take any action to restore the shielded state.
+
+To interact again, the full unlock flow must be repeated from the beginning.
 
 ---
 
@@ -78,6 +82,7 @@ Shielding does:
 - Reduce passive wallet exposure
 - Limit unintended or automated interaction
 - Enforce explicit user intent before usage
+- Automatically restore protection on session end
 
 Shielding does not:
 - Remove funds from the blockchain
@@ -85,22 +90,32 @@ Shielding does not:
 - Obfuscate on-chain data
 - Pool or reroute assets
 
-Griplock does not alter blockchain transparency.  
+GripLock does not alter blockchain transparency.
 It alters **interaction availability**.
 
 ---
 
 ## Security and Privacy Implications
 
-By decoupling receipt from interaction, Griplock:
+By decoupling receipt from interaction, GripLock:
 - Reduces attack surface during idle periods
 - Prevents background signing
 - Limits exposure to wallet probing and automation
+- Ensures key material exists only within intentional sessions
+
+No key material persists outside of an active session. No remote process can initiate signing. No background task can access shielded funds.
 
 Privacy is achieved through **controlled access**, not through obfuscation.
 
 ---
 
-> **Summary**  
-> In Griplock, funds can exist without being usable.  
-> Interaction is unlocked only by explicit, physical user intent — and only for the duration of a session.
+> **Summary**
+> In GripLock, funds can exist without being usable.
+> Interaction is unlocked only through the full sequence: NFC tap, auth policy, key reconstruction — and only for the duration of a session.
+> When the session ends, funds automatically return to a shielded state. GripLock never custodies keys or funds.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

@@ -1,93 +1,132 @@
-Griplock does not store long-lived private keys.
+GripLock does not store long-lived private keys or derive wallets from user credentials.
 
-Instead, cryptographic keys are **derived locally**, used within a controlled wallet session, and discarded immediately when that session ends.
+In V2, the wallet's MASTER_SECRET is generated from **secure random bytes** — not derived from PINs, NFC UIDs, or user secrets. User credentials serve exclusively as **policy unlock gates** and **intent confirmation factors**.
 
-This page describes how keys are created, used, and destroyed within the Griplock system.
-
----
-
-## No Persistent Keys
-
-Griplock does not maintain persistent private keys on:
-- Servers
-- User accounts
-- Background services
-
-Private keys do not exist unless an active wallet session exists.
-
-If there is no session, there are no usable keys.
+This page describes how cryptographic keys are derived, scoped, and destroyed within the GripLock system.
 
 ---
 
-## Local Key Derivation
+## MASTER_SECRET Generation
 
-Key derivation occurs only after a wallet session is explicitly created through physical intent.
+The wallet's root secret is a **32-byte cryptographically secure random value** generated at wallet creation time.
 
-Derivation happens:
-- Locally on the user’s device
-- In volatile memory
-- Only for the duration of the session
+- Generated once via the platform's secure random number generator
+- Never derived from user-provided inputs (PIN, Secret, NFC UID)
+- Protected at rest through Shamir secret sharing (2-of-3 threshold)
+- Never transmitted to GripLock servers
 
-Private keys are never transmitted to Griplock servers or external services.
+User credentials unlock access to the MASTER_SECRET. They do not create it.
 
 ---
 
-## Session-Bound Usage
+## K_user — User-Derived Unlock Key
 
-Once derived, keys are used exclusively within the active wallet session.
+K_user is the key derived from the user's PIN and/or Secret. It encrypts Share A of the Shamir split stored on Google Drive.
 
-During this period:
-- Transactions may be constructed and signed
-- On-chain interactions may be initiated
-- Signing capability is limited to the session scope
+Derivation uses **Argon2id** with memory-hard parameters:
 
-There is no background signing and no delegated execution.
+```
+K_user = Argon2id(PIN + ":" + SECRET, randomSalt, {
+  mem_kib: 65536,   // 64 MiB
+  iters: 3,
+  parallelism: 1
+}) → 32 bytes
+```
+
+If Argon2id is unavailable on the target platform, **scrypt** is used as a fallback KDF with equivalent security parameters.
+
+Salt is a 16–32 byte random value generated at provisioning time and stored alongside the KdfEnvelope. It is never reused.
+
+---
+
+## Auth Level Modes
+
+GripLock supports three authentication modes for K_user derivation, configured per-wallet:
+
+| Mode | Input | Use Case |
+|------|-------|----------|
+| **PIN Only** | `PIN + ":"` + random salt | Convenience-first users (rate limiting enforced) |
+| **Secret Only** | `":" + SECRET` + random salt | Users who prefer a strong passphrase |
+| **Maximum** | `PIN + ":" + SECRET` + random salt | Full-strength derivation (both required) |
+
+The selected mode determines which factors are required to decrypt Share A. Mode selection is stored in the KdfEnvelope's `pinPolicy` field.
+
+---
+
+## K_dev — Device-Bound Key
+
+K_dev is generated and managed by the device's **Secure Enclave** (iOS) or **Android Keystore**.
+
+- Non-exportable — never leaves the hardware security module
+- Used exclusively to encrypt Share B (the device-local Shamir share)
+- Bound to the device's biometric or lock screen policy
+- Cannot be extracted, backed up, or transferred
+
+If the device is lost, K_dev is lost with it. Share B must be re-provisioned from the remaining two shares.
+
+---
+
+## NFC UID Role
+
+The NFC card's UID is **not used for cryptographic key derivation or share encryption**.
+
+| Function | Permitted |
+|----------|-----------|
+| Intent gating (physical presence proof) | ✅ |
+| Session confirmation signal | ✅ |
+| Metadata hash storage (uidHash in recovery objects) | ✅ |
+| Encrypting shares or secrets | ❌ |
+| Deriving K_user or any encryption key | ❌ |
+
+The NFC UID is a low-entropy identifier. Using it as cryptographic material would compromise the security model. It serves only as a **physical intent gate**.
+
+---
+
+## Factor Rotation
+
+GripLock V2 supports credential rotation without wallet migration:
+
+- **PIN/Secret rotation**: Reconstruct MASTER_SECRET from any 2 shares → derive new K_user with new credentials → re-encrypt Share A → upload to Google Drive
+- **Device rotation**: Reconstruct MASTER_SECRET from Share A + Share C → generate new K_dev on new device → re-encrypt Share B
+- **NFC card replacement**: Update the uidHash in recovery metadata — no re-encryption of shares required
+
+Rotation never requires GripLock involvement. The user controls all factors.
 
 ---
 
 ## Key Destruction
 
-When a wallet session ends, derived keys are immediately discarded.
+When a wallet session ends, all derived keys are immediately discarded:
 
-Session termination may occur due to:
-- Explicit user exit
-- Application closure
-- Session timeout
-- Local security conditions being violated
+- K_user is wiped from memory
+- Session keys are cleared from SecureStore
+- MASTER_SECRET is removed from volatile memory
+- Signing capability ceases to exist
 
-After termination:
-- Keys are removed from memory
-- Signing capability no longer exists
-- The wallet becomes inaccessible again
-
-There is no key persistence between sessions.
+Keys are never persisted between sessions. Re-access requires fresh authentication and share reconstruction or session cache decryption.
 
 ---
 
-## Re-Derivation on Demand
+## What Is Never Done
 
-To regain access, keys must be re-derived through a new wallet session.
+GripLock V2 enforces explicit prohibitions:
 
-This requires:
-- Physical presence
-- NFC interaction
-- Local user confirmation
+- **NEVER** use `SHA256(PIN + ...)` as a key derivation function
+- **NEVER** derive encryption keys from the NFC UID
+- **NEVER** store MASTER_SECRET in plaintext on any device or server
+- **NEVER** transmit K_user, K_dev, or MASTER_SECRET over any network
 
-Each session produces fresh, temporary access without relying on previously stored keys.
-
----
-
-## Security Implications
-
-By deriving keys only when needed and destroying them afterward, Griplock:
-- Reduces exposure to long-lived key compromise
-- Prevents background or unattended signing
-- Limits the impact of device-level attacks
-
-Key availability is minimized by design.
+These rules are architectural invariants, not guidelines.
 
 ---
 
-> **Summary**  
-> In Griplock, private keys are not stored.  
-> They are derived when needed, used briefly, and destroyed completely.
+> **Summary**
+> In GripLock V2, the wallet's MASTER_SECRET is securely random — not derived from user credentials.
+> K_user (Argon2id) unlocks shares. K_dev (Secure Enclave) protects device-local data.
+> NFC confirms intent. No key material is ever stored, transmitted, or reused across sessions.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

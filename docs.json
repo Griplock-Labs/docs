@@ -20,9 +20,6 @@
           {
             "group": "Overview",
             "pages": [
-              "overview/what-is-griplock",
-              "overview/design-principles",
-              "overview/what-griplock-is-not",
               "documentation/overview/token-overview"
             ]
           },
@@ -69,6 +66,12 @@
             "group": "FAQ",
             "pages": [
               "faq/faq"
+            ]
+          },
+          {
+            "group": "Version History",
+            "pages": [
+              "changelog"
             ]
           }
         ]
