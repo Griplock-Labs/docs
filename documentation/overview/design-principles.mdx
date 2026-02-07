@@ -1,0 +1,146 @@
+GripLock's architecture is guided by a set of non-negotiable design principles.
+
+These principles inform every technical decision — from key derivation to session management to recovery.
+
+---
+
+## 1. Physical Intent Required
+
+Every wallet session must begin with a deliberate physical action.
+
+- NFC card tap is the only way to initiate a session
+- No remote, background, or automated access is possible
+- The physical requirement is enforced at the protocol level, not as a UI preference
+
+If you didn't tap, nothing happens.
+
+---
+
+## 2. Non-Custodial Absolute
+
+GripLock never custodies funds, keys, shares, or recovery data.
+
+- All cryptographic material is generated and processed on-device
+- Encrypted shares are stored by the user (Google Drive, device, Passkey)
+- GripLock servers have zero access to unencrypted key material
+- There is no GripLock-side recovery, override, or admin access
+
+The user is the sole custodian. This is not configurable.
+
+---
+
+## 3. Keys Exist Only When Needed
+
+The wallet's MASTER_SECRET is reconstructed only during an active session and destroyed immediately after.
+
+- Outside a session, the key does not exist in any usable form on any device
+- Session keys are short-lived and cached only in the device's secure enclave
+- Session termination triggers immediate key material cleanup
+- No persistent plaintext key storage anywhere in the system
+
+Exposure window is minimized by design.
+
+---
+
+## 4. Threshold Over Single Point of Failure
+
+Recovery and access use Shamir 2-of-3 threshold sharing instead of a single seed phrase or master password.
+
+- Three independent shares across three independent storage locations
+- Any 2 of 3 shares reconstruct the MASTER_SECRET
+- Losing one factor is recoverable
+- No single point of compromise or loss can destroy access
+
+Resilience through distribution.
+
+---
+
+## 5. Factors Are Replaceable
+
+User credentials (PIN, Secret, NFC card) can be rotated without changing the wallet address.
+
+- Changing your PIN re-encrypts Share A with a new K_user
+- Replacing your NFC card updates the pairing metadata
+- The MASTER_SECRET and wallet address remain unchanged
+- No migration, no new wallet, no fund transfer needed
+
+Identity is bound to the key, not to the credentials.
+
+---
+
+## 6. Memory-Hard Cryptography
+
+All key derivation uses memory-hard algorithms resistant to brute-force attacks.
+
+- Argon2id with 64 MiB memory, 3 iterations as the primary KDF
+- scrypt as a fallback where Argon2id is unavailable
+- SHA-256 is never used for key derivation — only for non-secret fingerprints
+- All encryption uses AEAD (authenticated encryption) — no bare ciphers
+
+Crypto choices are conservative and well-established.
+
+---
+
+## 7. Privacy Is Structural
+
+Privacy is enforced by architecture, not by policy or promises.
+
+- No user accounts or profiles on GripLock servers
+- No KYC, no email, no identity linking
+- No transaction logs stored by GripLock
+- Wallet activity is visible only on-chain, never to GripLock
+
+If the data doesn't exist, it can't be leaked, subpoenaed, or sold.
+
+---
+
+## 8. Separation of Concerns
+
+Each component in the system has a single, well-defined role:
+
+| Component | Role | Not Used For |
+|-----------|------|-------------|
+| **NFC UID** | Physical intent gate | Key derivation, encryption |
+| **PIN/Secret** | Policy unlock (K_user derivation) | Wallet generation |
+| **Passkey** | Auth factor + recovery share wrapper | Key derivation |
+| **Secure Enclave** | K_dev generation + Share B encryption | User-facing auth |
+| **Google Drive** | Encrypted Share A storage | Key management |
+
+No component exceeds its defined scope.
+
+---
+
+## 9. Fail Closed
+
+When in doubt, GripLock denies access rather than granting it.
+
+- Missing NFC tap → no session
+- Failed authentication → no key reconstruction
+- Expired session → key material destroyed
+- Corrupted share → reconstruction fails, no partial access
+
+There is no degraded mode that weakens security.
+
+---
+
+## 10. No Custody Creep
+
+As GripLock evolves (execution policies, agent compatibility, multi-chain), the custody boundary is preserved.
+
+- Future features execute within user-defined policy bounds
+- Agents may initiate transactions but never custody keys
+- Multi-wallet and multi-chain expansion follows the same non-custodial model
+- The user always retains final authority
+
+Convenience features will never compromise the custody model.
+
+---
+
+> **Summary**
+> GripLock's design principles: physical intent required, absolute non-custody, keys exist only when needed, threshold recovery, replaceable factors, memory-hard crypto, structural privacy, separation of concerns, fail-closed behavior, and no custody creep — ever.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

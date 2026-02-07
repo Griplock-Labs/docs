@@ -1,0 +1,72 @@
+GripLock is a non-custodial DeFi wallet that enforces physical intent for every transaction.
+
+It combines NFC card authentication with threshold cryptography to create a wallet that only works when you physically choose to use it.
+
+---
+
+## Core Concept
+
+GripLock creates a wallet session only when the user taps their NFC card and confirms their identity. Outside of a session, the wallet's private key does not exist in any usable form.
+
+- No always-on access
+- No background signing
+- No remote authorization
+
+Every interaction with your funds requires deliberate, physical action.
+
+---
+
+## How It Works (Summary)
+
+1. **Wallet Creation** — A random 32-byte MASTER_SECRET is generated and split into 3 shares using Shamir secret sharing
+2. **Share Distribution** — Shares are encrypted and stored across Google Drive, the device, and a Passkey backup
+3. **Session Creation** — Tap your NFC card + authenticate (PIN, Secret, or Passkey) to reconstruct the key temporarily
+4. **Transaction Signing** — Sign transactions during the active session
+5. **Session End** — Key material is wiped from memory. The wallet returns to a shielded state
+
+---
+
+## What Makes It Different
+
+| Feature | Traditional Wallet | GripLock |
+|---------|-------------------|----------|
+| **Key Storage** | Always available on device | Split across 3 locations, reconstructed on demand |
+| **Access Model** | Software unlock (password/biometric) | Physical NFC tap + authentication |
+| **Recovery** | Seed phrase (single point of failure) | 2-of-3 threshold recovery (no seed phrase) |
+| **Background Access** | Possible | Impossible — requires physical card |
+| **Factor Rotation** | Usually changes wallet address | PIN/Secret/NFC changeable without affecting wallet |
+
+---
+
+## Non-Custodial by Design
+
+GripLock does not custody funds, private keys, or recovery data.
+
+- MASTER_SECRET is generated on-device and never transmitted
+- Shares are encrypted before leaving the device
+- GripLock servers never see unencrypted key material
+- Recovery is user-controlled through threshold reconstruction
+
+The user is the sole custodian at all times.
+
+---
+
+## Who It's For
+
+GripLock is designed for users who want:
+
+- Physical control over when their wallet is active
+- Protection against remote attacks, malware, and unauthorized access
+- Recovery options that don't depend on memorizing a seed phrase
+- A wallet that cannot sign transactions without their physical presence
+
+---
+
+> **Summary**
+> GripLock is a non-custodial DeFi wallet that uses NFC-based physical intent, threshold cryptography, and session-based access to give users complete control over their funds — with no always-on exposure.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>

@@ -1,0 +1,115 @@
+Understanding what GripLock is not is as important as understanding what it is.
+
+This page clarifies common misconceptions and draws clear boundaries around GripLock's scope and responsibilities.
+
+---
+
+## GripLock Is Not a Custodial Wallet
+
+GripLock never holds, stores, or has access to user funds or private keys.
+
+- MASTER_SECRET is generated on-device and split into encrypted shares
+- Shares are stored by the user across their own storage (Google Drive, device, Passkey)
+- GripLock servers cannot reconstruct, access, or freeze user wallets
+- There is no "GripLock vault" or centralized key store
+
+If GripLock ceases to exist, your shares and wallet remain fully functional.
+
+---
+
+## GripLock Is Not an Exchange
+
+GripLock does not facilitate trading, market-making, or order matching.
+
+- No order books
+- No liquidity pools operated by GripLock
+- No fiat on/off ramp services managed by GripLock
+- No price feeds or trading interfaces
+
+GripLock is a wallet access layer, not a trading platform.
+
+---
+
+## GripLock Is Not a Blockchain
+
+GripLock does not operate its own chain, consensus mechanism, or validator network.
+
+- No native blockchain
+- No gas token requirement
+- No on-chain protocol governance
+
+GripLock operates as a client-side security layer on top of existing blockchains.
+
+---
+
+## GripLock Is Not an Always-On Wallet
+
+Unlike most wallets, GripLock is intentionally not always available.
+
+- The wallet's signing capability only exists during an active session
+- Sessions require physical NFC tap + authentication
+- Outside a session, the MASTER_SECRET does not exist in memory
+- There is no background process that can sign transactions
+
+This is a feature, not a limitation.
+
+---
+
+## GripLock Is Not a Seed Phrase Wallet
+
+GripLock V2 does not use mnemonic seed phrases.
+
+- No 12 or 24 word recovery phrase
+- No BIP-39 word list
+- Recovery uses Shamir 2-of-3 threshold sharing instead
+- Nothing to write down, photograph, or store in a safe
+
+---
+
+## GripLock Does Not Process Transactions
+
+GripLock signs transactions locally during a session. It does not:
+
+- Submit transactions to the blockchain on behalf of users
+- Batch, sequence, or prioritize transactions
+- Act as a relayer or transaction processor
+- Store transaction history on GripLock servers
+
+The signed transaction is handed to the user's chosen RPC endpoint or dApp.
+
+---
+
+## GripLock Does Not Store User Data
+
+GripLock does not maintain user accounts, profiles, or data on its servers.
+
+- No email addresses or personal information collected
+- No KYC or identity verification
+- No analytics tied to wallet addresses
+- No transaction logs stored by GripLock
+
+Privacy is structural, not policy-based.
+
+---
+
+## GripLock Does Not Offer Custodial Recovery
+
+If a user loses 2 or more of their 3 recovery factors, GripLock cannot recover their wallet.
+
+- There is no "forgot password" flow that contacts GripLock
+- There is no admin override or master key
+- There is no support ticket that can restore access
+- Recovery is entirely user-controlled through threshold reconstruction
+
+This is the trade-off of true non-custodial design.
+
+---
+
+> **Summary**
+> GripLock is not a custodial wallet, exchange, blockchain, always-on wallet, seed phrase wallet, transaction processor, data store, or custodial recovery service. It is a non-custodial, session-based wallet access layer that enforces physical intent.
+
+---
+
+<Info>
+This page describes **GripLock V2** architecture. See the [Changelog](/changelog) for version history and V1 comparison.
+</Info>
