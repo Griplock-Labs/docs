@@ -57,8 +57,9 @@
             ]
           },
           {
-            "group": "Roadmap (Soft)",
+            "group": "Roadmap",
             "pages": [
+              "documentation/roadmap/product-roadmap",
               "roadmap/areas-of-focus"
             ]
           },

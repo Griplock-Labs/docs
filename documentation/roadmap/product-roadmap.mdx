@@ -1,0 +1,83 @@
+
+# Product Roadmap
+
+Griplock is built as an **intent, privacy, and security layer** for crypto wallet interactions.
+
+Its core principle is simple:  
+**a wallet interaction should only exist when a human explicitly intends it.**
+
+This roadmap focuses on strengthening that principle across three layers:
+- **Intent enforcement**
+  ensuring actions only occur with deliberate human presence  
+- **Privacy control** 
+  reducing exposure by limiting when and how wallets can be used  
+- **Security hardening**
+  minimizing attack surface through ephemeral access and strong authentication
+
+---
+
+## Phase 1 - Core Intent Foundation
+
+This phase establishes reliable human intent enforcement.
+
+- NFC-based physical intent confirmation
+- PIN-based local verification
+- Ephemeral wallet session lifecycle (spawn → use → destroy)
+- Private Receive as the default state
+- Explicit unlock / unshield flows
+- Clear session state visibility
+- Session boundary security testing
+
+---
+
+## Phase 2 - Intent-Driven Wallet Actions
+
+Intent enforcement expands into core wallet interactions.
+
+- Private Send (intent-gated)
+- Private Swap (intent-gated)
+- Session-scoped permissions
+- Removal of persistent approvals
+- Error handling & recovery UX
+- Intent visibility during active sessions
+
+---
+
+## Phase 3 - User-Selectable Authentication & Intent Models
+
+Authentication becomes stronger, flexible, and configurable by the user.
+
+- User-selectable authentication combinations
+- Supported authentication flows:
+  - NFC + PIN
+  - NFC + Secret
+  - NFC + PIN + Secret
+- Authentication strength profiles per user
+- Session binding to the selected authentication model
+- Recovery and fallback flows for authentication factors
+
+---
+
+## Phase 4 - Micropayment & Access Control Research (x402)
+
+This phase explores intent enforcement for per-request payment systems.
+
+- Intent-gated x402 payment flow research
+- Ephemeral payer wallet patterns
+- Client-side payment confirmation hooks
+- Verification and trust layer experiments
+- Internal prototypes and technical documentation
+
+---
+
+## Phase 5 - Human ↔ Agent Boundary Controls
+
+As automation increases, clear boundaries between humans and agents become critical.
+
+- Agent-initiated request gating
+- Human-in-the-loop approval flows
+- Intent policies for delegated actions
+- Controlled pilot testing
+- Extensible intent confirmation patterns
+
+---
